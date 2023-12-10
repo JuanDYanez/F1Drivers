@@ -5,30 +5,24 @@ const controllerGetAllTeams = async (req, res) => {
   try {
     const { data } = await axios.get("http://localhost:5000/drivers");
 
-    const allTeams = data.map((driver) => driver.teams?.split(/,|\s/) ?? []).flat();
-
+    const allTeams = data.map(driver => driver.teams?.split(/,| y /).map(team => team.trim()) ?? []).flat();
     
-    const filteredTeams = Array.from(new Set(allTeams)).filter(team => team.length > 1);
-    
-    
-    
-    for (let i = 0; i < filteredTeams.length; i++) {
+    for (let i = 0; i < allTeams.length; i++) {
       await Team.findOrCreate({
-        where: { name: filteredTeams[i] }
+        where: { name: allTeams[i] }
       });
     }
     
-    // filteredTeams.forEach(async (team) => await Team.findOrCreate(
-      //   {where:
-      //     {name: team}
-      //   }
-      // ))
+    // const createAllTeamsInBD = filteredTeams.forEach(
+    //   async (team) => await Team.findOrCreate(
+    //     {
+    //       where:
+    //         { name: team }
+    //     }
+    //   ));
       
-    const allTeamsFromBD = await Team.findAll();
-      
-    console.log(allTeamsFromBD);
-   
-
+    const allTeamsFromBD = await Team.findAll(); 
+  
     return allTeamsFromBD;
 
   } catch (error) {

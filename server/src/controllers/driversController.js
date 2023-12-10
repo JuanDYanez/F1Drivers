@@ -1,5 +1,5 @@
 const { Driver, Team } = require('../db.js')
-const { Op } = require("sequelize");
+const { Op, Sequelize } = require("sequelize");
 const axios = require('axios')
 
 
@@ -21,7 +21,9 @@ const controllerGetAllDrivers = async () => {
       };
     });
 
-    const driversFromDB = await Driver.findAll();
+    const driversFromDB = await Driver.findAll({
+      include: Team,
+    });
 
     const allDrivers = [...driversFromAPI, ...driversFromDB];
 
@@ -50,67 +52,110 @@ const controllerGetDriverById = async (id) => {
 
 const controllerGetDriverByName = async (name) => {
   
-  const capsQuery = (name.charAt(0).toUpperCase() + name.slice(1).toLowerCase());
+  try {
+    const allDrivers = await controllerGetAllDrivers();
+    
+    const filteredDrivers = allDrivers.filter(driver => {
+      const filterByForename = driver.forename.toLowerCase().includes(name.toLowerCase())
+      const filterBySurname = driver.surname.toLowerCase().includes(name.toLowerCase())
 
-  const getDriversByForenameFromAPI = await axios
-    .get(`http://localhost:5000/drivers?name.forename=${capsQuery}`);
-  const getDriversBySurnameFromAPI = await axios
-    .get(`http://localhost:5000/drivers?name.surname=${capsQuery}`);
+      return filterByForename || filterBySurname;
+    })
+
+    return filteredDrivers.slice(0,15)
+  } catch (error) {
+    throw new Error (error)
+  }
+
+
+
+  //Código para buscar por "name" en la API y en la BD por separado. Pero cuando se hacía la búsqueda por un fragmento del name, no lo encontraba.
+
+  // const capsQuery = (name.charAt(0).toUpperCase() + name.slice(1).toLowerCase());
+
+  // const getDriversByForenameFromAPI = await axios
+  //   .get(`http://localhost:5000/drivers?name.forename=${encodeURIComponent(capsQuery)}`);
+  // const getDriversBySurnameFromAPI = await axios
+  //   .get(`http://localhost:5000/drivers?name.surname=${encodeURIComponent(capsQuery)}`);
   
-  const [forenameResponse, surnameResponse] = await Promise.all([getDriversByForenameFromAPI, getDriversBySurnameFromAPI]);
+  // const [forenameResponse, surnameResponse] = await Promise.all([getDriversByForenameFromAPI, getDriversBySurnameFromAPI]);
 
-  const forenameData = Array.isArray(forenameResponse.data) ? forenameResponse.data : [];
-  const surnameData = Array.isArray(surnameResponse.data) ? surnameResponse.data : [];
+  // const forenameData = Array.isArray(forenameResponse.data) ? forenameResponse.data : [];
+  // const surnameData = Array.isArray(surnameResponse.data) ? surnameResponse.data : [];
 
-  const getDriversFromAPI = [...forenameData, ...surnameData];
+  // const getDriversFromAPI = [...forenameData, ...surnameData];
   
-  const setDriversFromAPI = getDriversFromAPI.map((driver) => {
-      return {
-        id: driver.id,
-        forename: driver.name.forename,
-        surname: driver.name.surname,
-        description: driver.description,
-        image: driver.image.url,
-        nationality: driver.nationality,
-        dob: driver.dob,
-        teams: driver.teams,
-      };
-  });
+  // const setDriversFromAPI = getDriversFromAPI.map((driver) => {
+  //     return {
+  //       id: driver.id,
+  //       forename: driver.name.forename,
+  //       surname: driver.name.surname,
+  //       description: driver.description,
+  //       image: driver.image.url,
+  //       nationality: driver.nationality,
+  //       dob: driver.dob,
+  //       teams: driver.teams,
+  //     };
+  // });
   
-  const getDriversFromDB = await Driver.findAll({
-    where: {
-      [Op.or]: [
-        { forename: { [Op.iLike]: `%${name}%` } },
-        { surname: { [Op.iLike]: `%${name}%` } },
-      ],
-    },
-    include: Team,
-  });
+  // const getDriversFromDB = await Driver.findAll({
+  //   where: {
+  //     [Op.or]: [
+  //       { forename: { [Op.iLike]: `%${name}%` } },
+  //       { surname: { [Op.iLike]: `%${name}%` } },
+  //     ],
+  //   },
+  //   include: Team,
+  // });
 
-  const setDriversFromDB = getDriversFromDB.map((driver) => ({
-    id: driver.id,
-    forename: driver.forename,
-    surname: driver.surname,
-    description: driver.description,
-    image: driver.image,
-    nationality: driver.nationality,
-    dob: driver.dob,
-    teams: driver.teams,
-  }));
+  // const setDriversFromDB = getDriversFromDB.map((driver) => ({
+  //   id: driver.id,
+  //   forename: driver.forename,
+  //   surname: driver.surname,
+  //   description: driver.description,
+  //   image: driver.image,
+  //   nationality: driver.nationality,
+  //   dob: driver.dob,
+  //   teams: driver.Teams,
+  // }));
 
 
-  const combinedDrivers = [...setDriversFromAPI, ...setDriversFromDB].slice(0, 15);
+  // const combinedDrivers = [...setDriversFromAPI, ...setDriversFromDB].slice(0, 15);
 
-  return combinedDrivers;
+  // return combinedDrivers;
 };
 
 // Controller para crear un nuevo piloto (BD)
 const controllerCreateNewDriver = async (forename, surname, description, image, nationality, dob, teams) => {
-  
+ 
   try {
-    return await Driver.create({ forename, surname, description, image, nationality, dob, teams })
+    const newDriver = await Driver.create({
+      forename,
+      surname,
+      description,
+      image,
+      nationality,
+      dob
+    });
+
+    const splittedTeams = teams.split(/,/).map(team => team.trim());
+    
+    for (let i = 0; i < splittedTeams.length; i++) {
+      let [foundOrCreatedTeam, created] = await Team.findOrCreate({
+      where: { name: splittedTeams[i] }
+    });
+    
+    if (!foundOrCreatedTeam) {
+    throw new Error(`Equipo ${splittedTeams[i]} no fue encontrado`)
+    }
+      
+    await newDriver.addTeam(foundOrCreatedTeam)
+    }
+
+    return newDriver;
   } catch (error) {
-    throw new Error("Error al crear nuevo piloto en base de datos")
+    console.error("Error al crear nuevo piloto en base de datos", error)
+    throw error;
   }
   
 }

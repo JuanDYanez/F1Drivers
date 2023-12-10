@@ -56,9 +56,14 @@ const handlerGetAllDrivers = async (req, res) => {
 
 // Handler para crear un nuevo piloto (BD)
 const handlerCreateNewDriver = async (req, res) => {
-  const { forename, surname, description, image, nationality, dob, teams } = req.body;
-
   try {
+
+  const { forename, surname, description, image, nationality, dob, teams } = req.body;
+  
+    if (!forename || !surname || !description || !image || !nationality || !dob || !teams) {
+      return res.status(400).json({status: "Se necesita información completa"})
+    } 
+
     const response = await controllerCreateNewDriver(
       forename,
       surname,
@@ -68,6 +73,7 @@ const handlerCreateNewDriver = async (req, res) => {
       dob,
       teams,
     );
+    
 
     res.status(200).json(response);
   } catch (error) {
