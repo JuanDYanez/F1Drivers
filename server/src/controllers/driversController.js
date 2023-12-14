@@ -14,7 +14,7 @@ const controllerGetAllDrivers = async () => {
         forename: driver.name.forename,
         surname: driver.name.surname,
         description: driver.description,
-        image: driver.image.url || '../../../F1.svg',
+        image: driver.image.url || '../../../nopicdriver.jpg',
         nationality: driver.nationality,
         dob: driver.dob,
         teams: driver.teams,

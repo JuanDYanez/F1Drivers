@@ -1,0 +1,16 @@
+.CardContainer {
+  width: 300px;
+  height: 500px;
+  overflow: hidden;
+  background-color: black;
+  margin: 1rem;
+}
+
+.cardImage {
+  width: 200px;
+  height: 200px;
+}
+
+.cardImage img {
+  width: 300px;
+}
