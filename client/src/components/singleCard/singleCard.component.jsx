@@ -5,11 +5,11 @@ function SingleCard({driver}) {
 
   return (
     <div className={s.CardContainer}>
-      <h2>{`${forename} ${surname}`}</h2>
-      <p>{`Nacionalidad: ${nationality}`}</p>
       <div className={s.cardImage}>
         <img src={image} alt="driver-image" />
       </div>
+      <h3>{`${forename} ${surname}`}</h3>
+      <p>{`Nacionalidad: ${nationality}`}</p>
       <p>{`Escuderías: ${teams}`}</p>
     </div>
   );

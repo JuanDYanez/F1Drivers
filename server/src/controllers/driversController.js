@@ -9,15 +9,27 @@ const controllerGetAllDrivers = async () => {
     const driversFromAPI = (
       await axios.get(`http://localhost:5000/drivers`)
     ).data.map((driver) => {
+      const parseImg = () => {
+        let driverURL;
+        if (driver.image.url === "") {
+          driverURL = "../../../nopicdriver.jpg";
+        } else if (driver.image.url === "https://cdn.pixabay.com/photo/2013/07/12/15/36/motorsports-150157_960_720.png") {
+          driverURL = "../../../nopicdriver.jpg"
+        } else {
+          driverURL = driver.image.url
+        }
+        return driverURL;
+      };
       return {
         id: driver.id,
         forename: driver.name.forename,
         surname: driver.name.surname,
         description: driver.description,
-        image: driver.image.url || '../../../nopicdriver.jpg',
+        image: parseImg(),
         nationality: driver.nationality,
         dob: driver.dob,
         teams: driver.teams,
+        createdInDB: false,
       };
     });
 

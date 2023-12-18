@@ -1,6 +1,12 @@
+.MainContainer {
+  display: flex;
+  flex-wrap: wrap;
+  width: 80vw;
+  justify-content: center;
+}
 .CardsContainer {
   display: flex;
   flex-wrap: wrap;
-  justify-content:space-between;
-  width: 80vw;
+  width: 100vw;
+  justify-content: center;
 }

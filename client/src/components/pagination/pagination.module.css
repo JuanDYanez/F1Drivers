@@ -1,0 +1,33 @@
+ul {
+  z-index: 1;
+}
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  width: 40%;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination li {
+  list-style: none;
+  display: inline-block;
+  text-decoration: none;
+}
+.pagination li:hover {
+  color: white;
+  background-color: #333;
+  border-radius: 5px;
+}
+
+.paginationPages {
+  display: flex;
+  align-items: center;
+}
+
+
