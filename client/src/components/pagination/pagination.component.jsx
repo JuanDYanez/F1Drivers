@@ -49,7 +49,7 @@ function Pagination({driversPerPage, currentPage, setCurrentPage, totalDrivers})
     return displayPages.map((page, index) => (
       <li key={index}>
         {page === null
-          ? (<span>---</span>)
+          ? (<span>   </span>)
           : (
             <a className={page === currentPage ? s.active : ""} onClick={() => onSpecificPage(page)}>{ page }</a>
           )}

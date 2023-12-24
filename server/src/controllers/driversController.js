@@ -9,6 +9,7 @@ const controllerGetAllDrivers = async () => {
     const driversFromAPI = (
       await axios.get(`http://localhost:5000/drivers`)
     ).data.map((driver) => {
+
       const parseImg = () => {
         let driverURL;
         if (driver.image.url === "") {
@@ -20,11 +21,12 @@ const controllerGetAllDrivers = async () => {
         }
         return driverURL;
       };
+
       return {
         id: driver.id,
         forename: driver.name.forename,
         surname: driver.name.surname,
-        description: driver.description,
+        description: driver.description || 'Sin información adicional',
         image: parseImg(),
         nationality: driver.nationality,
         dob: driver.dob,
@@ -172,9 +174,30 @@ const controllerCreateNewDriver = async (forename, surname, description, image, 
   
 }
 
+const controllerGetAllNationalities = async () => {
+  
+  try {
+
+    const { data } = await axios.get("http://localhost:5000/drivers");
+
+    const allNationalities = data.map((driver) => driver.nationality);
+    const uniqueNationalities = [...new Set(allNationalities)].sort((a, b) => {
+      return a.localeCompare(b)
+    });
+
+    return uniqueNationalities;
+
+  } catch (error) {
+    throw new Error(error.message);    
+
+  }
+};
+
+
 module.exports = {
   controllerCreateNewDriver,
   controllerGetDriverById,
   controllerGetAllDrivers,
   controllerGetDriverByName,
+  controllerGetAllNationalities
 };

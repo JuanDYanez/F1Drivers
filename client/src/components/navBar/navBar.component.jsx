@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
+import {NavLink} from 'react-router-dom'
 
 import s from "./navBar.module.css";
 function NavBar({ onSearch, teams, teamsFilter, DBFilter, orderByName, orderByDOB, getAllDrivers }) {
@@ -53,6 +54,9 @@ function NavBar({ onSearch, teams, teamsFilter, DBFilter, orderByName, orderByDO
         />
         <button type="submit" onClick={handleSubmit}>Buscar</button>
         <button type="submit" onClick={handleSubmitAllDrivers}>Todos</button>
+        <NavLink className={s.NavLinkButton} to='/driver/create'>
+          <button type="submit">Crear</button>
+        </NavLink>
       </div>
       <div className={s.filters}>
         <select onChange={handleFilterByTeams} defaultValue="">

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { FILTER_BY_TEAMS, GET_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB } from './actions-types'
+import { FILTER_BY_TEAMS, GET_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, GET_NATIONALITIES } from './actions-types'
 
 
 export function getDrivers() {
@@ -21,6 +21,19 @@ export function getTeams() {
       const {data} = await axios.get("http://localhost:3001/teams");
       return dispatch({
         type: GET_TEAMS,
+        payload: data,
+      });
+    } catch (error) {
+      console.error(error)
+    }
+  }
+} 
+export function getNationalities() {
+  return async function (dispatch) {
+    try {
+      const {data} = await axios.get("http://localhost:3001/drivers/nationalities");
+      return dispatch({
+        type: GET_NATIONALITIES,
         payload: data,
       });
     } catch (error) {

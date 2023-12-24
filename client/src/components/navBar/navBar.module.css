@@ -8,7 +8,26 @@
   display: flex;
   gap: 10px;
   margin: 10px;
+  align-items: center;
 }
+.searchBar button {
+  width: 80px;
+  height: 20px;
+}
+/* .NavLinkButton {
+  width: 80px;
+  height: 15px;
+}
+.NavLinkButton button {
+  width: 80px;
+  height: 20px;
+  margin: 0px; */
+  /* border: 0px;
+  padding: 0px;
+} */
+
+
+
 
 .filters {
   border: 2px solid white;

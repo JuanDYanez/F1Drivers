@@ -30,4 +30,4 @@ const controllerGetAllTeams = async (req, res) => {
   }
 }
 
-module.exports = controllerGetAllTeams;
+module.exports = controllerGetAllTeams

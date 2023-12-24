@@ -1,4 +1,4 @@
-const { controllerCreateNewDriver, controllerGetDriverById, controllerGetAllDrivers, controllerGetDriverByName } = require("../controllers/driversController");
+const { controllerCreateNewDriver, controllerGetDriverById, controllerGetAllDrivers, controllerGetDriverByName, controllerGetAllNationalities } = require("../controllers/driversController");
 
 
 // Handler para requerir los pilotos por nombre (API && BD)
@@ -34,6 +34,7 @@ const handlerGetDriverById = async (req, res) => {
     
     res.status(200).json(response);
   } catch (error) {
+    console.error(error)
     res.status(400).json({ error: error.message });
   }
   
@@ -81,9 +82,22 @@ const handlerCreateNewDriver = async (req, res) => {
   }
 };
 
+const handlerGetAllNationalities = async (req, res) => {
+  try {
+    const response = await controllerGetAllNationalities();
+
+    res.status(200).json(response);
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ error: error.message });
+  }
+};
+
+
 module.exports = {
   handlerGetAllDrivers,
   handlerGetDriverByName,
   handlerGetDriverById,
   handlerCreateNewDriver,
+  handlerGetAllNationalities
 };

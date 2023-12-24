@@ -7,7 +7,7 @@ import Pagination from "../../components/pagination/pagination.component.jsx";
 import s from "./cardsContainer.module.css";
 
 export default function CardsContainer({drivers}) {
-  const [driversPerPage, setDriversPerPage] = useState(9);
+  const driversPerPage = 9;
   const [currentPage, setCurrentPage] = useState(1);
 
   const lastIndex = currentPage * driversPerPage

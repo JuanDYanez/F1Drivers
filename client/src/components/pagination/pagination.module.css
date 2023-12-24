@@ -1,6 +1,10 @@
 ul {
   z-index: 1;
 }
+
+span {
+  background-color: transparent !important;
+}
 .pagination {
   display: flex;
   justify-content: space-between;
@@ -17,7 +21,12 @@ ul {
 .pagination li {
   list-style: none;
   display: inline-block;
+  margin-left: 2px;
+  margin-right: 2px;
+  border-radius: 5px;
   text-decoration: none;
+  width: 40px;
+  background-color: #4e4e4e;
 }
 .pagination li:hover {
   color: white;
@@ -29,5 +38,7 @@ ul {
   display: flex;
   align-items: center;
 }
+
+
 
 

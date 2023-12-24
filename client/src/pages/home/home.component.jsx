@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getDrivers, getDriverByName, getTeams, filterByTeams, createdInDB, setOrderByName, setOrderByDOB } from "../../redux/actions.js";
+import { getDrivers, getDriverByName, getTeams, filterByTeams, createdInDB, setOrderByName, setOrderByDOB, getNationalities } from "../../redux/actions.js";
 
 import CardsContainer from "../../components/cardsContainer/cardsContainer.component.jsx";
 import NavBar from "../../components/navBar/navBar.component.jsx";
+
 
 import s from "./home.module.css";
 
@@ -16,6 +17,7 @@ function Home() {
   const drivers = useSelector((state) => state.drivers);
   const filteredDrivers = useSelector((state) => state.filteredDrivers);
   const teams = useSelector((state) => state.teams);
+  // const nationalities = useSelector((state) => state.nationalities)
 
   function onSearch(name) {
     if (name) {
@@ -70,6 +72,7 @@ function Home() {
   useEffect(() => {
     dispatch(getDrivers())
     dispatch(getTeams())
+    dispatch(getNationalities())
     // return (() => {
     // clearDetail() //Revisar esta parte
     // })
@@ -78,7 +81,8 @@ function Home() {
   return (  
     <div className={ s.mainContent }>
       <NavBar onSearch={onSearch} teams={teams} teamsFilter={filterByTeam} DBFilter={filterByDB} orderByName={orderByName} orderByDOB={orderByDOB} getAllDrivers={ submitAllDrivers} />
-      <CardsContainer  drivers={searched ? filteredDrivers : drivers} />
+      <CardsContainer drivers={searched ? filteredDrivers : drivers} />
+      {/* <CreateForm nationalities={nationalities} nationalitiesList={nationalitiesList} /> */}
     </div>)
   
 }
