@@ -61,7 +61,7 @@ const handlerCreateNewDriver = async (req, res) => {
 
   const { forename, surname, description, image, nationality, dob, teams } = req.body;
   
-    if (!forename || !surname || !description || !image || !nationality || !dob || !teams) {
+    if (!forename || !surname || !nationality || !dob || !teams) {
       return res.status(400).json({status: "Se necesita información completa"})
     } 
 

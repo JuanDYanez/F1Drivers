@@ -20,6 +20,8 @@
 }
 
 .cardHeader h4 {
+  width: 260px;
+  white-space: wrap;
   margin: 3px 0 0 0;
   color: white;
 }

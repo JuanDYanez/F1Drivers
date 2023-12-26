@@ -33,10 +33,11 @@ a {
   align-items: center;
   justify-content: center;
   margin: auto auto;
-  margin-top: 25dvh;
+  margin-top: 20px;
+  margin-bottom: 20px;
   background-color: #000000c6;
   width: 500px;
-  height: 320px;
+  height: auto;
   border-radius: 10px;
   color: white;
   padding: 20px;
@@ -65,13 +66,6 @@ a {
   transition: 300ms;
 }
 
-.submitButton:nth-child(2) {
-  margin-left: 20px;
-  color: black;
-  text-decoration: none;
-}
-
-
 .submitButton:active {
   background-color: #c6d96a;
   color: rgb(34, 34, 34);
@@ -84,6 +78,10 @@ a {
 }
 
 .logoF1 {
-  max-width: 20%;
+  max-width: 30%;
   height: auto;
+}
+
+fieldset label .spanStar {
+  font-size:large;
 }

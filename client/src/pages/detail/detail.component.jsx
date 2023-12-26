@@ -17,6 +17,42 @@ function Detail() {
       })
   }, [id]);
 
+  const DBteamsToString = () => {
+
+    if (driver.createdInDB === true) {
+      return driver.Teams.map((team) => team.name).join(', ');
+    }
+    
+    if (driver.createdInDB === false) {
+      return driver.teams
+    }
+  }
+
+  console.log(DBteamsToString())
+
+
+  // const DBTeamsToString = () => {
+  //   if (driver.createdInDB === true) {
+
+  //     const teamsToString = driver.Teams.map(team => team.name)
+      
+  //     return {
+  //       ...driver,
+  //       Teams: driver.teams,
+  //     }
+  //   }
+
+
+  //   if (driver.createdInDB === true) {
+  //     return {
+  //       ...driver,
+  //       teams: driver.Teams.map(team => team.name).join(", "),
+  //     }
+  //   }
+    
+  //     return driver;
+  // };
+
 
   return (
     <div className={s.MainContainer}>
@@ -28,7 +64,7 @@ function Detail() {
         <div className={s.rightColumn}>
           <h2>{`${driver?.forename} ${driver?.surname}`}</h2>
           <p>Nacionalidad: {driver?.nationality}</p>
-          <p>Escuderías: {driver?.teams}</p>
+          <p>Escuderías: {DBteamsToString()}</p>
           <p>Nacimiento: {driver?.dob}</p>
           <p>{driver?.description}</p>
         </div>

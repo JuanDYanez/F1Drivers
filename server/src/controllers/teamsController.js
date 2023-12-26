@@ -6,10 +6,12 @@ const controllerGetAllTeams = async (req, res) => {
     const { data } = await axios.get("http://localhost:5000/drivers");
 
     const allTeams = data.map(driver => driver.teams?.split(/,| y /).map(team => team.trim()) ?? []).flat();
+
+    const allTeamsOrdered = allTeams.sort((a, b) => a.localeCompare(b));
     
-    for (let i = 0; i < allTeams.length; i++) {
+    for (let i = 0; i < allTeamsOrdered.length; i++) {
       await Team.findOrCreate({
-        where: { name: allTeams[i] }
+        where: { name: allTeamsOrdered[i] }
       });
     }
     

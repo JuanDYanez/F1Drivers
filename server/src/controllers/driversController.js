@@ -22,15 +22,25 @@ const controllerGetAllDrivers = async () => {
         return driverURL;
       };
 
+      const parseTeams = () => {
+        
+        if (driver.teams?.includes(',')) {
+          return driver.teams.split(',').map((team) => team.trim()).join(', ');
+        } else {
+          return driver.teams;
+        }
+        
+      };
+
       return {
         id: driver.id,
         forename: driver.name.forename,
         surname: driver.name.surname,
-        description: driver.description || 'Sin información adicional',
+        description: driver.description || "Sin información adicional",
         image: parseImg(),
         nationality: driver.nationality,
         dob: driver.dob,
-        teams: driver.teams,
+        teams: parseTeams() || "No registra escuderías",
         createdInDB: false,
       };
     });
@@ -43,7 +53,7 @@ const controllerGetAllDrivers = async () => {
 
     return allDrivers;
   } catch (error) {
-    throw new Error("Error al consultar todos los pilotos");
+    throw new Error(error);
   }
 };
 
@@ -146,10 +156,10 @@ const controllerCreateNewDriver = async (forename, surname, description, image, 
     const newDriver = await Driver.create({
       forename,
       surname,
-      description,
-      image,
+      description: description || "Sin información adicional",
+      image: image || "../../../nopicdriver.jpg",
       nationality,
-      dob
+      dob,
     });
 
     const splittedTeams = teams.split(/,/).map(team => team.trim());

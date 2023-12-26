@@ -7,6 +7,7 @@ function NavBar({ onSearch, teams, teamsFilter, DBFilter, orderByName, orderByDO
   const [name, setName] = useState("");
 
   const handleChange = (e) => {
+    e.preventDefault();
     setName(e.target.value);
   };
 

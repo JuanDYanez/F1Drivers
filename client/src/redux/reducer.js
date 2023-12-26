@@ -4,7 +4,8 @@ let initialState = {
   drivers: [],
   filteredDrivers: [],
   teams: [],
-  nationalities: []
+  nationalities: [],
+  driverData: [],
   // driversCopy:[]
 }
 

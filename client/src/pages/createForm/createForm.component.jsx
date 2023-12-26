@@ -1,142 +1,255 @@
 /* eslint-disable react/prop-types */
 import { useDispatch, useSelector } from "react-redux";
-import s from "./createForm.styles.css";
+import s from "./createForm.module.css";
 import { getNationalities, getTeams } from "../../redux/actions";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import validate from "./validation";
+import axios from 'axios';
 
 function CreateForm() {
 
   const dispatch = useDispatch()
 
   const nationalities = useSelector((state) => state.nationalities);
+  const teams = useSelector((state) => state.teams);
 
   useEffect(() => {
     dispatch(getTeams());
     dispatch(getNationalities());
   }, [dispatch]);
+  
+  const [driverData, setDriverData] = useState({
+    forename: "",
+    surname: "",
+    description: "",
+    image: "",
+    nationality: "",
+    dob: "",
+    teams: [],
+  });
 
-  // const handleNationalitiesList = (e) => {
-  //   nationalitiesList(e.target.value);
-  // };
+  const [errors, setErrors] = useState({
+    forename: "",
+    surname: "",
+    nationality: "",
+    dob: "",
+    teams: "",
+  });
 
-  console.log(nationalities)
+  const [selectedTeams, setSelectedTeams] = useState([])
+
+  const handleValidation = (fieldName, value) => {
+    const fieldErrors = validate({ [fieldName]: value }) 
+    
+    setErrors((errors) => ({
+      ...errors,
+      [fieldName]: fieldErrors[fieldName]
+    }))
+  }
+
+  const handleChange = (e) => {
+    
+    e.preventDefault()
+
+    if (e.target.name === 'teams') {
+      setDriverData({
+        ...driverData,
+        teams:selectedTeams
+      })
+    } else {
+      setDriverData({
+        ...driverData,
+        [e.target.name]: e.target.value,
+      });
+    }
+
+    handleValidation(e.target.name, e.target.value)
+
+  };
+
+  const handleSelectedTeams = (e) => {
+    const selectedOptions = Array.from(e.target.selectedOptions).map(option => option.value)
+
+    setSelectedTeams(selectedOptions)
+
+  }
+
+  const handleSubmit = async (e) => {
+
+    e.preventDefault()
+
+    const URL = "http://localhost:3001/drivers/";
+
+    try {
+
+      const { forename, surname, description, image, nationality, dob, teams } = driverData;
+
+      const teamsToString = teams.join(', ')
+
+      const data = {
+        forename,
+        surname,
+        description,
+        image,
+        nationality,
+        dob,
+        teams: teamsToString,
+      };
+
+      const response = await axios.post(URL, data)
+
+      if (response.status === 200) {
+        window.alert("¡Piloto registrado exitosamente!");
+      }
+            
+      return response
+
+
+    } catch (error) {
+      console.error(error)
+      throw new Error({error: error.message})
+    }
+
+  }
+
+  const disableSubmitButton = () => {
+
+    const formNoCompleted = Object.entries(driverData).some(
+      ([key, value]) =>
+        (typeof value === "string" || Array.isArray(value)) &&
+        (value === "" || (Array.isArray(value) && value.length === 0)) &&
+        key !== "image" &&
+        key !== "description"
+
+    );
+
+    const formHasNoErrors = Object.entries(errors).some(
+      ([key, value]) =>
+        typeof value === "string" &&
+        value === "" &&
+        key !== "image" &&
+        key !== "description"
+    );  
+
+    return formNoCompleted || !formHasNoErrors
+    
+  }
+
   return (
     <div className={s.FormContainer}>
-      <form>
+      <form onSubmit={handleSubmit}>
         <fieldset>
           <legend>Registra un nuevo piloto</legend>
           <img className={s.logoF1} src="/F1white.svg" alt="F1_Logo" />
-          <label htmlFor="">Nombre: </label>
+          <label htmlFor="">
+            <span className={s.spanStar}>*</span>Nombre:
+          </label>
           <input
             type="text"
             name="forename"
-            // value={userData.email}
-            // onChange={handleChange}
-            // onBlur={handleBlur}
+            placeholder="Ingresa el nombre"
+            value={driverData.forename}
+            onChange={handleChange}
+            onBlur={handleChange}
             // className={`${errors.email ? s.inputWarning : ""}`}
           />
-          {/* {errors.email ? <p className={s.textWarning}>{errors.email}</p> : ""} */}
+          <span className={s.textWarning}>{errors.forename}</span>
 
-          <label htmlFor="">Apellido: </label>
+          <label htmlFor="">
+            <span className={s.spanStar}>*</span>Apellido:{" "}
+          </label>
           <input
             type="text"
             name="surname"
-            // value={userData.password}
-            // onChange={handleChange}
-            // onBlur={handleBlur}
+            placeholder="Ingresa el apellido"
+            value={driverData.surname}
+            onChange={handleChange}
+            onBlur={handleChange}
             // className={`${errors.password ? s.inputWarning : ""}`}
           />
-          {/* {errors.password ? (
-            <p className={s.textWarning}>{errors.password}</p>
-          ) : (
-            ""
-          )} */}
+          <span className={s.textWarning}>{errors.surname}</span>
 
-          <label htmlFor="">Nacionalidad: </label>
-          <select defaultValue="">
-            <option disabled value="" >Selecciona una nacionalidad</option>
-            {nationalities?.map((nationality, index) => (
-              <option key={index} value={nationality}>{nationality}</option>
-            ))}
-            {/* // value={userData.password}
-            // onChange={handleChange}
+          <label htmlFor="">
+            <span className={s.spanStar}>*</span>Nacionalidad:{" "}
+          </label>
+          <select
+            type="text"
+            name="nationality"
+            value={driverData.nationality}
+            onChange={handleChange}
+            onBlur={handleChange}
             // onBlur={handleBlur}
-            // className={`${errors.password ? s.inputWarning : ""}`} */}
+          >
+            <option disabled value="">
+              Selecciona una nacionalidad
+            </option>
+            {nationalities?.map((nationality, index) => (
+              <option key={index} value={nationality}>
+                {nationality}
+              </option>
+            ))}
           </select>
-          {/* {errors.password ? (
-            <p className={s.textWarning}>{errors.password}</p>
-          ) : (
-            ""
-          )} */}
+          <span className={s.textWarning}>{errors.nationality}</span>
 
           <label htmlFor="">Imagen: </label>
           <input
             type="text"
-            name="surname"
-            // value={userData.password}
-            // onChange={handleChange}
-            // onBlur={handleBlur}
-            // className={`${errors.password ? s.inputWarning : ""}`}
+            name="image"
+            placeholder="Ingresa la URL de la imagen"
+            value={driverData.image}
+            onChange={handleChange}
           />
-          {/* {errors.password ? (
-            <p className={s.textWarning}>{errors.password}</p>
-          ) : (
-            ""
-          )} */}
 
-          <label htmlFor="">Fecha de nacimiento: </label>
+          <label htmlFor="">
+            <span className={s.spanStar}>*</span>Fecha de nacimiento:{" "}
+          </label>
           <input
             type="text"
-            name="surname"
-            // value={userData.password}
-            // onChange={handleChange}
-            // onBlur={handleBlur}
+            name="dob"
+            placeholder="AAAA / MM / DD"
+            value={driverData.dob}
+            onChange={handleChange}
+            onBlur={handleChange}
             // className={`${errors.password ? s.inputWarning : ""}`}
           />
-          {/* {errors.password ? (
-            <p className={s.textWarning}>{errors.password}</p>
-          ) : (
-            ""
-          )} */}
+          <span className={s.textWarning}>{errors.dob}</span>
 
           <label htmlFor="">Descripción: </label>
           <input
             type="text"
-            name="surname"
-            // value={userData.password}
-            // onChange={handleChange}
-            // onBlur={handleBlur}
-            // className={`${errors.password ? s.inputWarning : ""}`}
+            name="description"
+            placeholder="Ingresa una breve descripción"
+            value={driverData.description}
+            onChange={handleChange}
           />
-          {/* {errors.password ? (
-            <p className={s.textWarning}>{errors.password}</p>
-          ) : (
-            ""
-          )} */}
 
           <label htmlFor="">Escuderías: </label>
-          <input
-            type="text"
-            name="surname"
-            // value={userData.password}
-            // onChange={handleChange}
-            // onBlur={handleBlur}
-            // className={`${errors.password ? s.inputWarning : ""}`}
-          />
-     
+          <select
+            multiple
+            name="teams"
+            value={selectedTeams}
+            onChange={handleSelectedTeams}
+            onBlur={handleChange}
+          >
+            <option disabled defaultValue="">
+              Selecciona las escuderías
+            </option>
+            {teams?.map((team) => (
+              <option key={team.id} value={team.name}>
+                {team.name}
+              </option>
+            ))}
+          </select>
+          <span className={s.textWarning}>{errors.teams}</span>
 
           <div>
             <button
-              className={s.submitButton}
-              // onClick={handleSubmit}
+              type="submit"
+              disabled={disableSubmitButton()}
+              onClick={handleSubmit}
             >
-              Ingresa
+              Crear piloto
             </button>
-            {/* <button className={s.submitButton} onClick={handleRegister}>
-              <NavLink to="/register">
-                  Regístrate
-              </NavLink>
-            </button> */}
           </div>
         </fieldset>
       </form>
