@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import validate from "./validation";
 import axios from 'axios';
 
-function CreateForm() {
+function CreateForm({handleCloseForm}) {
 
   const dispatch = useDispatch()
 
@@ -100,10 +100,19 @@ function CreateForm() {
 
       if (response.status === 200) {
         window.alert("¡Piloto registrado exitosamente!");
+
+        setDriverData({
+          forename: "",
+          surname: "",
+          description: "",
+          image: "",
+          nationality: "",
+          dob: "",
+          teams: [],
+        });
       }
             
       return response
-
 
     } catch (error) {
       console.error(error)
@@ -136,124 +145,127 @@ function CreateForm() {
   }
 
   return (
-    <div className={s.FormContainer}>
-      <form onSubmit={handleSubmit}>
-        <fieldset>
-          <legend>Registra un nuevo piloto</legend>
-          <img className={s.logoF1} src="/F1white.svg" alt="F1_Logo" />
-          <label htmlFor="">
-            <span className={s.spanStar}>*</span>Nombre:
-          </label>
-          <input
-            type="text"
-            name="forename"
-            placeholder="Ingresa el nombre"
-            value={driverData.forename}
-            onChange={handleChange}
-            onBlur={handleChange}
-            // className={`${errors.email ? s.inputWarning : ""}`}
-          />
-          <span className={s.textWarning}>{errors.forename}</span>
-
-          <label htmlFor="">
-            <span className={s.spanStar}>*</span>Apellido:{" "}
-          </label>
-          <input
-            type="text"
-            name="surname"
-            placeholder="Ingresa el apellido"
-            value={driverData.surname}
-            onChange={handleChange}
-            onBlur={handleChange}
-            // className={`${errors.password ? s.inputWarning : ""}`}
-          />
-          <span className={s.textWarning}>{errors.surname}</span>
-
-          <label htmlFor="">
-            <span className={s.spanStar}>*</span>Nacionalidad:{" "}
-          </label>
-          <select
-            type="text"
-            name="nationality"
-            value={driverData.nationality}
-            onChange={handleChange}
-            onBlur={handleChange}
-            // onBlur={handleBlur}
-          >
-            <option disabled value="">
-              Selecciona una nacionalidad
-            </option>
-            {nationalities?.map((nationality, index) => (
-              <option key={index} value={nationality}>
-                {nationality}
-              </option>
-            ))}
-          </select>
-          <span className={s.textWarning}>{errors.nationality}</span>
-
-          <label htmlFor="">Imagen: </label>
-          <input
-            type="text"
-            name="image"
-            placeholder="Ingresa la URL de la imagen"
-            value={driverData.image}
-            onChange={handleChange}
-          />
-
-          <label htmlFor="">
-            <span className={s.spanStar}>*</span>Fecha de nacimiento:{" "}
-          </label>
-          <input
-            type="text"
-            name="dob"
-            placeholder="AAAA / MM / DD"
-            value={driverData.dob}
-            onChange={handleChange}
-            onBlur={handleChange}
-            // className={`${errors.password ? s.inputWarning : ""}`}
-          />
-          <span className={s.textWarning}>{errors.dob}</span>
-
-          <label htmlFor="">Descripción: </label>
-          <input
-            type="text"
-            name="description"
-            placeholder="Ingresa una breve descripción"
-            value={driverData.description}
-            onChange={handleChange}
-          />
-
-          <label htmlFor="">Escuderías: </label>
-          <select
-            multiple
-            name="teams"
-            value={selectedTeams}
-            onChange={handleSelectedTeams}
-            onBlur={handleChange}
-          >
-            <option disabled defaultValue="">
-              Selecciona las escuderías
-            </option>
-            {teams?.map((team) => (
-              <option key={team.id} value={team.name}>
-                {team.name}
-              </option>
-            ))}
-          </select>
-          <span className={s.textWarning}>{errors.teams}</span>
-
-          <div>
-            <button
-              type="submit"
-              disabled={disableSubmitButton()}
-              onClick={handleSubmit}
+    <div>
+      <div className={s.FormContainer}>
+      <button className={s.closeButton} onClick={handleCloseForm}>X</button>
+        <form onSubmit={handleSubmit}>
+          <fieldset>
+            <legend>Registra un nuevo piloto</legend>
+            <img className={s.logoF1} src="/F1white.svg" alt="F1_Logo" />
+            <label htmlFor="">
+              <span className={s.spanStar}>*</span>Nombre:
+            </label>
+            <input
+              type="text"
+              name="forename"
+              placeholder="Ingresa el nombre"
+              value={driverData.forename}
+              onChange={handleChange}
+              onBlur={handleChange}
+              // className={`${errors.email ? s.inputWarning : ""}`}
+            />
+            <span className={s.textWarning}>{errors.forename}</span>
+  
+            <label htmlFor="">
+              <span className={s.spanStar}>*</span>Apellido:{" "}
+            </label>
+            <input
+              type="text"
+              name="surname"
+              placeholder="Ingresa el apellido"
+              value={driverData.surname}
+              onChange={handleChange}
+              onBlur={handleChange}
+              // className={`${errors.password ? s.inputWarning : ""}`}
+            />
+            <span className={s.textWarning}>{errors.surname}</span>
+  
+            <label htmlFor="">
+              <span className={s.spanStar}>*</span>Nacionalidad:{" "}
+            </label>
+            <select
+              type="text"
+              name="nationality"
+              value={driverData.nationality}
+              onChange={handleChange}
+              onBlur={handleChange}
+              // onBlur={handleBlur}
             >
-              Crear piloto
-            </button>
-          </div>
-        </fieldset>
-      </form>
-    </div>
+              <option disabled value="">
+                Selecciona una nacionalidad
+              </option>
+              {nationalities?.map((nationality, index) => (
+                <option key={index} value={nationality}>
+                  {nationality}
+                </option>
+              ))}
+            </select>
+            <span className={s.textWarning}>{errors.nationality}</span>
+  
+            <label htmlFor="">Imagen: </label>
+            <input
+              type="text"
+              name="image"
+              placeholder="Ingresa la URL de la imagen"
+              value={driverData.image}
+              onChange={handleChange}
+            />
+  
+            <label htmlFor="">
+              <span className={s.spanStar}>*</span>Fecha de nacimiento:{" "}
+            </label>
+            <input
+              type="text"
+              name="dob"
+              placeholder="AAAA / MM / DD"
+              value={driverData.dob}
+              onChange={handleChange}
+              onBlur={handleChange}
+              // className={`${errors.password ? s.inputWarning : ""}`}
+            />
+            <span className={s.textWarning}>{errors.dob}</span>
+  
+            <label htmlFor="">Descripción: </label>
+            <input
+              type="text"
+              name="description"
+              placeholder="Ingresa una breve descripción"
+              value={driverData.description}
+              onChange={handleChange}
+            />
+  
+            <label htmlFor="">Escuderías: </label>
+            <select
+              multiple
+              name="teams"
+              value={selectedTeams}
+              onChange={handleSelectedTeams}
+              onBlur={handleChange}
+            >
+              <option disabled defaultValue="">
+                Selecciona las escuderías
+              </option>
+              {teams?.map((team) => (
+                <option key={team.id} value={team.name}>
+                  {team.name}
+                </option>
+              ))}
+            </select>
+            <span className={s.textWarning}>{errors.teams}</span>
+  
+            <div>
+              <button
+                type="submit"
+                disabled={disableSubmitButton()}
+                onClick={handleSubmit}
+              >
+                Crear piloto
+              </button>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+  </div>
   );
 }
 

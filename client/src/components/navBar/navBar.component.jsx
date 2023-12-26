@@ -1,9 +1,8 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
-import {NavLink} from 'react-router-dom'
+import { useState } from "react"; 
 
 import s from "./navBar.module.css";
-function NavBar({ onSearch, teams, teamsFilter, DBFilter, orderByName, orderByDOB, getAllDrivers }) {
+function NavBar({ onSearch, teams, teamsFilter, DBFilter, orderByName, orderByDOB, getAllDrivers, handleCreateButton, handleCloseForm }) {
   const [name, setName] = useState("");
 
   const handleChange = (e) => {
@@ -15,32 +14,47 @@ function NavBar({ onSearch, teams, teamsFilter, DBFilter, orderByName, orderByDO
     if (e.key === "Enter") {
       onSearch(name);
       setName("");
+
+      handleCloseForm();
     }
   };
 
   const handleSubmit = () => {
     onSearch(name);
     setName("");
+
+    handleCloseForm();
   }
 
   const handleSubmitAllDrivers = () => {
     getAllDrivers();
+
+    handleCloseForm();
+
   }
   
   const handleFilterByTeams = (e) => {
     teamsFilter(e.target.value)
+
+    handleCloseForm();
   }
 
   const handleFilterDB = (e) => {
     DBFilter(e.target.value)
+
+    handleCloseForm();
   }
 
   const handleOrderByName = (e) => {
     orderByName(e.target.value)
+
+    handleCloseForm()
   }
 
   const handleOrderByDOB = (e) => {
     orderByDOB(e.target.value)
+
+    handleCloseForm();
   }
 
   return (
@@ -55,9 +69,7 @@ function NavBar({ onSearch, teams, teamsFilter, DBFilter, orderByName, orderByDO
         />
         <button type="submit" onClick={handleSubmit}>Buscar</button>
         <button type="submit" onClick={handleSubmitAllDrivers}>Todos</button>
-        <NavLink className={s.NavLinkButton} to='/driver/create'>
-          <button type="submit">Crear</button>
-        </NavLink>
+        <button type="submit" onClick={handleCreateButton}>Crear</button>
       </div>
       <div className={s.filters}>
         <select onChange={handleFilterByTeams} defaultValue="">

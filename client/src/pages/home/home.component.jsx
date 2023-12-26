@@ -4,6 +4,7 @@ import { getDrivers, getDriverByName, getTeams, filterByTeams, createdInDB, setO
 
 import CardsContainer from "../../components/cardsContainer/cardsContainer.component.jsx";
 import NavBar from "../../components/navBar/navBar.component.jsx";
+import CreateForm from "../createForm/createForm.component.jsx";
 
 
 import s from "./home.module.css";
@@ -11,8 +12,9 @@ import s from "./home.module.css";
 function Home() {
 
   const dispatch = useDispatch();
-
+  
   const [searched, setSearched] = useState(false)
+  const [showForm, setShowForm] = useState(false)
 
   const drivers = useSelector((state) => state.drivers);
   const filteredDrivers = useSelector((state) => state.filteredDrivers);
@@ -69,6 +71,14 @@ function Home() {
     }
   }
 
+  function handleCreateButton () {
+    setShowForm(true)
+  }
+
+  function handleCloseForm () {
+  setShowForm(false)
+  }
+
   useEffect(() => {
     dispatch(getDrivers())
     dispatch(getTeams())
@@ -79,10 +89,11 @@ function Home() {
   }, [dispatch])
   
   return (  
-    <div className={ s.mainContent }>
-      <NavBar onSearch={onSearch} teams={teams} teamsFilter={filterByTeam} DBFilter={filterByDB} orderByName={orderByName} orderByDOB={orderByDOB} getAllDrivers={ submitAllDrivers} />
-      <CardsContainer drivers={searched ? filteredDrivers : drivers} />
-      {/* <CreateForm nationalities={nationalities} nationalitiesList={nationalitiesList} /> */}
+    <div className={s.mainContent}>
+      <NavBar onSearch={onSearch} teams={teams} teamsFilter={filterByTeam} DBFilter={filterByDB} orderByName={orderByName} orderByDOB={orderByDOB} getAllDrivers={submitAllDrivers} handleCreateButton={handleCreateButton} handleCloseForm={handleCloseForm} />
+      {showForm
+        ? (<CreateForm handleCloseForm={handleCloseForm} />)
+        : (<CardsContainer drivers={searched ? filteredDrivers : drivers} />)}
     </div>)
   
 }
