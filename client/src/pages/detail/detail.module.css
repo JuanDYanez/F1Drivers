@@ -54,3 +54,9 @@
   margin-top: 15px;
   text-decoration: none;
 }
+
+.flag {
+  width: 50px;
+  border: solid .5px rgb(102, 102, 102);
+  border-radius: 5px ;
+}

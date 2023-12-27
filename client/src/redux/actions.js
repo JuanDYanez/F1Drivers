@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { FILTER_BY_TEAMS, GET_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, GET_NATIONALITIES} from './actions-types'
+import { FILTER_BY_TEAMS, GET_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, GET_NATIONALITIES, GET_NATIONALITY_FLAG, CLEAR_NATIONALITY_FLAG} from './actions-types'
 
 
 export function getDrivers() {
@@ -41,6 +41,30 @@ export function getNationalities() {
     }
   }
 } 
+
+export function getNationalityFlag(id) {
+  return async function (dispatch) {
+    try {
+      const { data } = await axios.get(`http://localhost:3001/drivers/flag/${id}`)
+    
+      return dispatch({
+        type: GET_NATIONALITY_FLAG,
+        payload: data
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+export function clearNationalityFlag() {
+  return async function (dispatch) {
+      return dispatch({
+        type: CLEAR_NATIONALITY_FLAG,
+        payload: "",
+      });
+  };
+}
 
 export const getDriverByName = (name) => {
   

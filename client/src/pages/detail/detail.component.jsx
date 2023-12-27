@@ -4,17 +4,34 @@ import { useParams } from "react-router-dom";
 import s from "./detail.module.css";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { getNationalityFlag, clearNationalityFlag } from '../../redux/actions.js';
 
 function Detail() {
-
   const { id } = useParams();
   const [driver, setDriver] = useState({})
 
+  const dispatch = useDispatch()
+
+  const nationalityFlag = useSelector((state) => state.nationalityFlag);
+
   useEffect(() => {
-    axios.get(`http://localhost:3001/drivers/${id}`).then(
-      ({ data }) => {
+    const fetchDriverData = async () => {
+      try {
+        const { data } = await axios.get(`http://localhost:3001/drivers/${id}`);
         setDriver(data);
-      })
+
+        dispatch(getNationalityFlag(id));
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchDriverData();
+    
+    return () => {
+      dispatch(clearNationalityFlag());
+    };
   }, [id]);
 
   const DBteamsToString = () => {
@@ -27,9 +44,7 @@ function Detail() {
       return driver.teams
     }
   }
-
-  console.log(DBteamsToString())
-
+  
 
   // const DBTeamsToString = () => {
   //   if (driver.createdInDB === true) {
@@ -63,7 +78,7 @@ function Detail() {
         </div>
         <div className={s.rightColumn}>
           <h2>{`${driver?.forename} ${driver?.surname}`}</h2>
-          <p>Nacionalidad: {driver?.nationality}</p>
+          {nationalityFlag && <img className={s.flag} src={nationalityFlag} alt={driver?.nationality}/>}
           <p>Escuderías: {DBteamsToString()}</p>
           <p>Nacimiento: {driver?.dob}</p>
           <p>{driver?.description}</p>

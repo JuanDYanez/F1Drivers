@@ -1,6 +1,7 @@
 const { Driver, Team } = require('../db.js')
 const { Op, Sequelize } = require("sequelize");
-const axios = require('axios')
+const axios = require('axios');
+const { all } = require('../server.js');
 
 
 // Controller para requerir a todos los pilotos (API && BD)
@@ -71,6 +72,25 @@ const controllerGetDriverById = async (id) => {
     throw new Error("Error al consultar el piloto requerido");
   }
   
+};
+
+const controllerGetFlagByDriver = async (id) => {
+  try {
+    const driverNationality = (await controllerGetDriverById(id)).nationality;
+    const { data } = await axios.get("https://restcountries.com/v3.1/all");
+
+    const flagByNationality = (driverNationality) => {
+      const foundCountry = data.find(
+        (country) => country.demonyms?.eng.m === driverNationality
+      );
+
+      return foundCountry ? foundCountry.flags.svg : foundCountry;
+    };
+
+    return flagByNationality(driverNationality);
+  } catch (error) {
+    throw new Error(error.message);
+  }
 };
 
 
@@ -188,9 +208,10 @@ const controllerGetAllNationalities = async () => {
   
   try {
 
-    const { data } = await axios.get("http://localhost:5000/drivers");
+    const { data } = await axios.get("https://restcountries.com/v3.1/all");
 
-    const allNationalities = data.map((driver) => driver.nationality);
+    const allNationalities = data.map((country) => country.demonyms?.eng.m);
+
     const uniqueNationalities = [...new Set(allNationalities)].sort((a, b) => {
       return a.localeCompare(b)
     });
@@ -209,5 +230,6 @@ module.exports = {
   controllerGetDriverById,
   controllerGetAllDrivers,
   controllerGetDriverByName,
-  controllerGetAllNationalities
+  controllerGetAllNationalities,
+  controllerGetFlagByDriver,
 };

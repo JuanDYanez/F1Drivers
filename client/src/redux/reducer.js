@@ -1,4 +1,4 @@
-import { GET_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, GET_NATIONALITIES } from "./actions-types"
+import { GET_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, GET_NATIONALITIES, GET_NATIONALITY_FLAG, CLEAR_NATIONALITY_FLAG } from "./actions-types"
 
 let initialState = {
   drivers: [],
@@ -6,6 +6,7 @@ let initialState = {
   teams: [],
   nationalities: [],
   driverData: [],
+  nationalityFlag: ""
   // driversCopy:[]
 }
 
@@ -30,6 +31,16 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         nationalities: action.payload,
+      };
+    case GET_NATIONALITY_FLAG:
+      return {
+        ...state,
+        nationalityFlag: action.payload,
+      };
+    case CLEAR_NATIONALITY_FLAG:
+      return {
+        ...state,
+        nationalityFlag: action.payload,
       };
     case FILTER_BY_TEAMS:
       // eslint-disable-next-line no-case-declarations
