@@ -1,14 +1,15 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
 
 import SingleCard from "../singleCard/singleCard.component.jsx";
 import Pagination from "../../components/pagination/pagination.component.jsx";
 
 import s from "./cardsContainer.module.css";
+import { useSelector } from "react-redux";
 
 export default function CardsContainer({drivers}) {
   const driversPerPage = 9;
-  const [currentPage, setCurrentPage] = useState(1);
+
+  const currentPage = useSelector((state) => state.currentPage)
 
   const lastIndex = currentPage * driversPerPage
   const firstIndex = lastIndex - driversPerPage
@@ -20,7 +21,7 @@ export default function CardsContainer({drivers}) {
           <SingleCard driver={driver} key={driver.id} />
         )).slice(firstIndex, lastIndex)}
       </div>
-      <Pagination driversPerPage={driversPerPage} currentPage={ currentPage } setCurrentPage={setCurrentPage} drivers={drivers} />
+      <Pagination driversPerPage={driversPerPage} drivers={drivers} />
     </div>
   );
 }

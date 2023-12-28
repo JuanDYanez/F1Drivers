@@ -1,4 +1,4 @@
-import { GET_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, GET_NATIONALITIES, GET_NATIONALITY_FLAG, CLEAR_NATIONALITY_FLAG } from "./actions-types"
+import { GET_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, GET_NATIONALITIES, GET_NATIONALITY_FLAG, CLEAR_NATIONALITY_FLAG, NEXT_PAGE, PREV_PAGE, SPECIFIC_PAGE } from "./actions-types"
 
 let initialState = {
   drivers: [],
@@ -6,8 +6,8 @@ let initialState = {
   teams: [],
   nationalities: [],
   driverData: [],
-  nationalityFlag: ""
-  // driversCopy:[]
+  nationalityFlag: "",
+  currentPage: 1,
 }
 
 function rootReducer(state = initialState, action) {
@@ -21,6 +21,7 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         filteredDrivers: action.payload,
+        currentPage: 1
       };
     case GET_TEAMS:
       return {
@@ -118,6 +119,21 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         filteredDrivers: orderedByDOB,
+      };
+    case NEXT_PAGE:
+      return {
+        ...state,
+        currentPage: action.payload
+      };
+    case PREV_PAGE:
+      return {
+        ...state,
+        currentPage: action.payload
+      };
+    case SPECIFIC_PAGE:
+      return {
+        ...state,
+        currentPage: action.payload
       };
     default:
       return state;

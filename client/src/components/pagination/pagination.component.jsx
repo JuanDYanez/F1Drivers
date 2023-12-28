@@ -1,7 +1,14 @@
 /* eslint-disable react/prop-types */
+import { useDispatch, useSelector } from "react-redux";
 import s from "./pagination.module.css";
-function Pagination({driversPerPage, currentPage, setCurrentPage, drivers}) {
 
+import { nextPage, prevPage, specificPage } from "../../redux/actions.js";
+
+function Pagination({driversPerPage, drivers}) {
+
+  const dispatch = useDispatch()
+
+  const currentPage = useSelector((state) => state.currentPage)
   const pageNumbers = []
   const totalDrivers = drivers.length;
 
@@ -10,15 +17,15 @@ function Pagination({driversPerPage, currentPage, setCurrentPage, drivers}) {
   }
 
   const onPreviousPage = () => {
-    setCurrentPage(currentPage - 1)
+    dispatch(prevPage())
   }
 
   const onNextPage = () => {
-    setCurrentPage(currentPage+1)
+    dispatch(nextPage())
   }
 
-  const onSpecificPage = (e) => {
-    setCurrentPage(e)
+  const onSpecificPage = (page) => {
+    dispatch(specificPage(page))
   }
 
   const showPageNumbers = () => {

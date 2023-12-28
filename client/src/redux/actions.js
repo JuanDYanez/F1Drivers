@@ -1,8 +1,9 @@
 import axios from 'axios'
-import { FILTER_BY_TEAMS, GET_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, GET_NATIONALITIES, GET_NATIONALITY_FLAG, CLEAR_NATIONALITY_FLAG} from './actions-types'
+import { FILTER_BY_TEAMS, GET_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, GET_NATIONALITIES, GET_NATIONALITY_FLAG, CLEAR_NATIONALITY_FLAG, NEXT_PAGE, PREV_PAGE, SPECIFIC_PAGE} from './actions-types'
 
 
 export function getDrivers() {
+
   return async function (dispatch) {
     try {
       const {data} = await axios.get("http://localhost:3001/drivers");
@@ -106,7 +107,34 @@ export const setOrderByName = (order) => {
 }
 export const setOrderByDOB = (order) => {
   return {
-      type: ORDER_BY_DOB,
-      payload: order
-    }
+    type: ORDER_BY_DOB,
+    payload: order
+  }
+}
+
+export const nextPage = () => {
+  return function (dispatch, getStage) {
+    const { currentPage } = getStage();
+    dispatch({
+      type: NEXT_PAGE,
+      payload: currentPage + 1
+    });
+  }
+}
+export const prevPage = () => {
+  return function (dispatch, getStage) {
+    const { currentPage } = getStage();
+    dispatch({
+      type: PREV_PAGE,
+      payload: currentPage - 1
+    });
+  }
+}
+export const specificPage = (page) => {
+  return function (dispatch) {
+    dispatch({
+      type: SPECIFIC_PAGE,
+      payload: page
+    });
+  }
 }
