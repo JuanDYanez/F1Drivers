@@ -12,9 +12,6 @@ export default function CardsContainer({drivers}) {
 
   const lastIndex = currentPage * driversPerPage
   const firstIndex = lastIndex - driversPerPage
-
-
-  const totalDrivers = drivers.length
   
   return (
     <div className={s.MainContainer}>
@@ -23,7 +20,7 @@ export default function CardsContainer({drivers}) {
           <SingleCard driver={driver} key={driver.id} />
         )).slice(firstIndex, lastIndex)}
       </div>
-      <Pagination driversPerPage={driversPerPage} currentPage={ currentPage } setCurrentPage={setCurrentPage} totalDrivers={totalDrivers} />
+      <Pagination driversPerPage={driversPerPage} currentPage={ currentPage } setCurrentPage={setCurrentPage} drivers={drivers} />
     </div>
   );
 }

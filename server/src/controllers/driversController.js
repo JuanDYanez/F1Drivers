@@ -17,6 +17,8 @@ const controllerGetAllDrivers = async () => {
           driverURL = "../../../nopicdriver.jpg";
         } else if (driver.image.url === "https://cdn.pixabay.com/photo/2013/07/12/15/36/motorsports-150157_960_720.png") {
           driverURL = "../../../nopicdriver.jpg"
+        } else if (driver.image.url === "https://upload.wikimedia.org/wikipedia/commons/b/b3/Ricardo_Rosset_at_1997_Australian_Grand_Prix.jpg"){
+          driverURL = "../../../nopicdriver.jpg";
         } else {
           driverURL = driver.image.url
         }

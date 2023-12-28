@@ -1,15 +1,16 @@
 /* eslint-disable react/prop-types */
 import s from "./pagination.module.css";
-function Pagination({driversPerPage, currentPage, setCurrentPage, totalDrivers}) {
+function Pagination({driversPerPage, currentPage, setCurrentPage, drivers}) {
 
   const pageNumbers = []
+  const totalDrivers = drivers.length;
 
   for (let i = 1; i <= Math.ceil(totalDrivers / driversPerPage); i++) {
     pageNumbers.push(i)
   }
 
   const onPreviousPage = () => {
-      setCurrentPage(currentPage - 1)
+    setCurrentPage(currentPage - 1)
   }
 
   const onNextPage = () => {
@@ -31,10 +32,10 @@ function Pagination({driversPerPage, currentPage, setCurrentPage, totalDrivers})
       const startPage = Math.max(1, currentPage);
       const endPage = Math.min(startPage + maxPagesToShow - 1, totalPages)
 
-    if (startPage > 1) {
-      displayPages.push(1);
-      displayPages.push(null);
-  }
+      if (startPage > 1) {
+        displayPages.push(1);
+        displayPages.push(null);
+      }
 
       for (let i = startPage; i <= endPage; i++) {
         displayPages.push(i)
@@ -60,16 +61,11 @@ function Pagination({driversPerPage, currentPage, setCurrentPage, totalDrivers})
   return (
     <div className={s.pagination}>
       <button disabled={ currentPage === 1 ? true : false} onClick={onPreviousPage}>←</button>
-        <div className={s.paginationPages}>{ showPageNumbers()}</div>
-        {/* {pageNumbers.map((page) => (
-          <li key={page}>
-            <a onClick={() => onSpecificPage(page)}>{page}</a>
-          </li>
-        ))} */}
-      <button disabled={ currentPage >= pageNumbers.length ? true : false}onClick={onNextPage}>→</button>
+      <div className={s.paginationPages}>{ showPageNumbers()}</div>
+      <button disabled={ currentPage >= pageNumbers.length ? true : false} onClick={onNextPage}>→</button>
     </div>
   );
-  }
+}
 
 
 export default Pagination;

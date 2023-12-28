@@ -19,7 +19,6 @@ function Home() {
   const drivers = useSelector((state) => state.drivers);
   const filteredDrivers = useSelector((state) => state.filteredDrivers);
   const teams = useSelector((state) => state.teams);
-  // const nationalities = useSelector((state) => state.nationalities)
 
   function onSearch(name) {
     if (name) {
