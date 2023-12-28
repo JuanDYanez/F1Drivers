@@ -3,7 +3,17 @@ import { NavLink } from "react-router-dom";
 import s from "./singleCard.module.css";
 
 function SingleCard({driver}) {
-  const { id, forename, surname, image, teams } = driver;
+  const { id, forename, surname, image, teams, Teams, createdInDB } = driver;
+
+  const DBteamsToString = () => {
+    if (createdInDB === true) {
+      return Teams.map((team) => team.name).join(", ");
+    }
+
+    if (createdInDB === false) {
+      return teams;
+    }
+  };
 
   return (
     <NavLink className={s.CardContainer} to={`/driver/${id}`}>
@@ -15,7 +25,7 @@ function SingleCard({driver}) {
             <h4>{`${forename} ${surname}`}</h4>
         </div>
         <p className={s.teamsTitle}>Escuderías</p>
-        <p className={s.teams}>{teams}</p>
+        <p className={s.teams}>{DBteamsToString()}</p>
       </div>
     </NavLink>
   );

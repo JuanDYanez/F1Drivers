@@ -60,6 +60,7 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         filteredDrivers: teamsFilter,
+        currentPage: 1,
       };
     case FILTER_BY_DB:
       // eslint-disable-next-line no-case-declarations
@@ -81,6 +82,7 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         filteredDrivers: DBFilter,
+        currentPage: 1,
       };
     case ORDER_BY_NAME:
       // eslint-disable-next-line no-case-declarations
