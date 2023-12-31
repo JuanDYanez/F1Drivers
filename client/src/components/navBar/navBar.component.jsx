@@ -30,7 +30,6 @@ function NavBar({ onSearch, teams, teamsFilter, DBFilter, orderByName, orderByDO
     getAllDrivers();
 
     handleCloseForm();
-
   }
   
   const handleFilterByTeams = (e) => {
@@ -80,7 +79,6 @@ function NavBar({ onSearch, teams, teamsFilter, DBFilter, orderByName, orderByDO
         </select>
         <select onChange={handleFilterDB} defaultValue="">
           <option disabled value="" >En Base de Datos</option>
-          <option value="All" >Todos</option>
           <option value="Y" >Sí</option>
           <option value="N" >No</option>
         </select>

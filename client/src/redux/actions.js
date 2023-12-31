@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { FILTER_BY_TEAMS, GET_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, GET_NATIONALITIES, GET_NATIONALITY_FLAG, CLEAR_NATIONALITY_FLAG, NEXT_PAGE, PREV_PAGE, SPECIFIC_PAGE} from './actions-types'
+import { FILTER_BY_TEAMS, GET_DRIVERS, CLEAN_FILTERED_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, GET_NATIONALITIES, GET_NATIONALITY_FLAG, CLEAR_NATIONALITY_FLAG, NEXT_PAGE, PREV_PAGE, SPECIFIC_PAGE, SET_NOT_FOUND} from './actions-types'
 
 
 export function getDrivers() {
@@ -16,6 +16,18 @@ export function getDrivers() {
     }
   }
 } 
+export function cleanFilteredDrivers() {
+  return {
+    type: CLEAN_FILTERED_DRIVERS,
+    payload: [],
+  }
+}
+export function cleanShowNotFound() {
+  return {
+    type: SET_NOT_FOUND,
+    payload: false,
+  }
+}
 export function getTeams() {
   return async function (dispatch) {
     try {
@@ -71,19 +83,20 @@ export const getDriverByName = (name) => {
   
   return async (dispatch) => {
     try {
-      if (name) {
-        const endpoint = `http://localhost:3001/drivers/name?name=${name}`;
-        const { data } = await axios.get(endpoint)
-        
+      const endpoint = `http://localhost:3001/drivers/name?name=${name}`;
+      const response = await axios.get(endpoint)   
         dispatch({
           type: GET_DRIVER_BY_NAME,
-          payload: data
+          payload: response.data
         });
-      } else {
-        dispatch(getDrivers());
-      }
     } catch (error) {
       console.error(error)
+      if (error.response.status === 404) {
+        dispatch({
+          type: SET_NOT_FOUND,
+          payload: true,
+        })
+      }
     }
   }
 }

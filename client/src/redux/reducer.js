@@ -1,13 +1,16 @@
-import { GET_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, GET_NATIONALITIES, GET_NATIONALITY_FLAG, CLEAR_NATIONALITY_FLAG, NEXT_PAGE, PREV_PAGE, SPECIFIC_PAGE } from "./actions-types"
+/* eslint-disable no-case-declarations */
+import { GET_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, GET_NATIONALITIES, GET_NATIONALITY_FLAG, CLEAR_NATIONALITY_FLAG, NEXT_PAGE, PREV_PAGE, SPECIFIC_PAGE, CLEAN_FILTERED_DRIVERS, SET_NOT_FOUND } from "./actions-types"
 
 let initialState = {
   drivers: [],
   filteredDrivers: [],
+  copyDrivers: [],
   teams: [],
   nationalities: [],
   driverData: [],
   nationalityFlag: "",
   currentPage: 1,
+  showNotFound: false,
 }
 
 function rootReducer(state = initialState, action) {
@@ -17,11 +20,21 @@ function rootReducer(state = initialState, action) {
         ...state,
         drivers: action.payload,
       };
+    case CLEAN_FILTERED_DRIVERS:
+      return {
+        ...state,
+        filteredDrivers: action.payload,
+      };
     case GET_DRIVER_BY_NAME:
       return {
         ...state,
         filteredDrivers: action.payload,
         currentPage: 1
+      };
+    case SET_NOT_FOUND:
+      return {
+        ...state,
+        showNotFound: action.payload,
       };
     case GET_TEAMS:
       return {
@@ -64,64 +77,115 @@ function rootReducer(state = initialState, action) {
       };
     case FILTER_BY_DB:
       // eslint-disable-next-line no-case-declarations
-      let DBFilter;
-      if (action.payload === "Y") {
-        DBFilter = state.drivers.filter((driver) => {
-          return driver.createdInDB === true;
-        });
-      } else if (action.payload === "N") {
-        DBFilter = state.drivers.filter((driver) => {
-          return driver.createdInDB === false;
-        });
-      } else {
-        return {
-          ...state,
-          filteredDrivers: state.drivers,
-        };
+      let DBDrivers;
+
+      if (state.filteredDrivers.length >= 1) {
+        if (action.payload === "Y") {
+          DBDrivers = state.filteredDrivers.filter((driver) => {
+            return driver.createdInDB === true;
+          });
+        }
+        if (action.payload === "N") {
+          DBDrivers = state.filteredDrivers.filter((driver) => {
+            return driver.createdInDB === false;
+          });
+        }
+      }
+      if (state.filteredDrivers.length === 0) {
+        if (action.payload === "Y") {
+          DBDrivers = state.drivers.filter((driver) => {
+            return driver.createdInDB === true;
+          });
+        }
+        if (action.payload === "N") {
+          DBDrivers = state.drivers.filter((driver) => {
+            return driver.createdInDB === false;
+          });
+        }
+         
       }
       return {
         ...state,
-        filteredDrivers: DBFilter,
+        filteredDrivers: DBDrivers,
         currentPage: 1,
       };
+    
     case ORDER_BY_NAME:
       // eslint-disable-next-line no-case-declarations
       let orderedByName;
-      if (action.payload === "A") {
-        orderedByName = [...state.drivers].sort((a, b) => {
-          return a.forename.localeCompare(b.forename, "en", {
-            sensitivity: "base",
+      // const copyDrivers = state.drivers.slice()
+      if (state.filteredDrivers.length>=1) {
+        if (action.payload === "A") {
+          orderedByName = [...state.filteredDrivers].sort((a, b) => {
+            return a.forename.localeCompare(b.forename, "en", {
+              sensitivity: "base",
+            });
           });
-        });
-      }
+        }
       if (action.payload === "D") {
-        orderedByName = [...state.drivers].sort((a, b) => {
+        orderedByName = [...state.filteredDrivers].sort((a, b) => {
           return b.forename.localeCompare(a.forename, "en", {
             sensitivity: "base",
           });
         });
       }
+      }
+      if (state.filteredDrivers.length===0) {
+        if (action.payload === "A") {
+          orderedByName = [...state.drivers].sort((a, b) => {
+            return a.forename.localeCompare(b.forename, "en", {
+              sensitivity: "base",
+            });
+          });
+        }
+        if (action.payload === "D") {
+          orderedByName = [...state.drivers].sort((a, b) => {
+            return b.forename.localeCompare(a.forename, "en", {
+              sensitivity: "base",
+            });
+          });
+        }
+      }
       return {
         ...state,
-        filteredDrivers: orderedByName,
+        drivers: orderedByName,
+        currentPage: 1
       };
+    
     case ORDER_BY_DOB:
       // eslint-disable-next-line no-case-declarations
       let orderedByDOB;
-      if (action.payload === "A") {
-        orderedByDOB = [...state.drivers].sort((a, b) => {
-          return a.dob.localeCompare(b.dob, "en", { sensitivity: "base" });
-        });
+
+      if (state.filteredDrivers.length >= 1) {
+        if (action.payload === "A") {
+          orderedByDOB = [...state.filteredDrivers].sort((a, b) => {
+            return a.dob.localeCompare(b.dob, "en", { sensitivity: "base" });
+          });
+        }
+        if (action.payload === "D") {
+          orderedByDOB = [...state.filteredDrivers].sort((a, b) => {
+            return b.dob.localeCompare(a.dob, "en", { sensitivity: "base" });
+          });
+        }
       }
-      if (action.payload === "D") {
-        orderedByDOB = [...state.drivers].sort((a, b) => {
-          return b.dob.localeCompare(a.dob, "en", { sensitivity: "base" });
-        });
+      if (state.filteredDrivers.length === 0) {
+        if (action.payload === "A") {
+          orderedByDOB = [...state.drivers].sort((a, b) => {
+            return a.dob.localeCompare(b.dob, "en", { sensitivity: "base" });
+          });
+        }
+        if (action.payload === "D") {
+          orderedByDOB = [...state.drivers].sort((a, b) => {
+            return b.dob.localeCompare(a.dob, "en", { sensitivity: "base" });
+          });
+        }
       }
       return {
         ...state,
         filteredDrivers: orderedByDOB,
+        currentPage: 1
       };
+    
     case NEXT_PAGE:
       return {
         ...state,
