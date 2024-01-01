@@ -111,7 +111,7 @@ function CreateForm({handleCloseForm}) {
           teams: [],
         });
       }
-            
+    
       return response
 
     } catch (error) {

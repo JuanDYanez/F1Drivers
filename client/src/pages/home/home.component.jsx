@@ -79,6 +79,7 @@ function Home() {
 
   function handleCreateButton () {
     setShowForm(true)
+    dispatch(cleanShowNotFound())
   }
 
   function handleCloseForm () {

@@ -58,41 +58,62 @@ function NavBar({ onSearch, teams, teamsFilter, DBFilter, orderByName, orderByDO
 
   return (
     <div className={s.navContainer}>
-      <div className={s.searchBar}>
-        <input
-          placeholder="Ingresa un nombre"
-          type="text"
-          onChange={handleChange}
-          onKeyPress={handleKeyPress}
-          value={name}
-        />
-        <button type="submit" onClick={handleSubmit}>Buscar</button>
-        <button type="submit" onClick={handleSubmitAllDrivers}>Todos</button>
-        <button type="submit" onClick={handleCreateButton}>Crear</button>
+      <img src="/racingFlag.webp" alt="racingFlag" />
+      <div className={s.searchContainer}>
+        <div className={s.searchBar}>
+          <input
+            placeholder="Ingresa un nombre"
+            type="text"
+            onChange={handleChange}
+            onKeyPress={handleKeyPress}
+            value={name}
+            className={s.searchInput}
+          />
+          <button type="submit" onClick={handleSubmit}>
+            Buscar
+          </button>
+          <button type="submit" onClick={handleSubmitAllDrivers}>
+            Todos
+          </button>
+          <button type="submit" onClick={handleCreateButton}>
+            Crear nuevo
+          </button>
+        </div>
+        <div className={s.filters}>
+          <select onChange={handleFilterByTeams} defaultValue="">
+            <option disabled value="">
+              Filtra por escudería
+            </option>
+            {teams?.map((team) => (
+              <option key={team.id} value={team.name}>
+                {team.name}
+              </option>
+            ))}
+          </select>
+          <select onChange={handleFilterDB} defaultValue="">
+            <option disabled value="">
+              En Base de Datos
+            </option>
+            <option value="Y">Sí</option>
+            <option value="N">No</option>
+          </select>
+          <select onChange={handleOrderByName} defaultValue="">
+            <option disabled value="">
+              Ordenar alfabéticamente
+            </option>
+            <option value="A">↧</option>
+            <option value="D">↥</option>
+          </select>
+          <select onChange={handleOrderByDOB} defaultValue="">
+            <option disabled value="">
+              Ordenar por nacimiento
+            </option>
+            <option value="A">↧</option>
+            <option value="D">↥</option>
+          </select>
+        </div>
       </div>
-      <div className={s.filters}>
-        <select onChange={handleFilterByTeams} defaultValue="">
-          <option disabled value="" >Filtra por escudería</option>
-          {teams?.map((team) => (
-            <option key={team.id} value={team.name}>{team.name }</option>
-          ))}
-        </select>
-        <select onChange={handleFilterDB} defaultValue="">
-          <option disabled value="" >En Base de Datos</option>
-          <option value="Y" >Sí</option>
-          <option value="N" >No</option>
-        </select>
-        <select onChange={handleOrderByName} defaultValue="">
-          <option disabled value="" >Ordenar alfabéticamente</option>
-          <option value="A" >↧</option>
-          <option value="D" >↥</option>
-        </select>
-        <select onChange={handleOrderByDOB} defaultValue="">
-          <option disabled value="" >Ordenar por nacimiento</option>
-          <option value="A" >↧</option>
-          <option value="D" >↥</option>
-        </select>
-      </div>
+      <img className={s.rightFlag } src="/racingFlag.webp" alt="racingFlag" />
     </div>
   );
 }

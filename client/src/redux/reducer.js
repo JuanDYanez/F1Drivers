@@ -58,6 +58,7 @@ function rootReducer(state = initialState, action) {
       };
     case FILTER_BY_TEAMS:
       // eslint-disable-next-line no-case-declarations
+      
       let teamsFilter = state.drivers.filter((driver) => {
         if (!driver.createdInDB) {
           return driver.teams && driver.teams.includes(action.payload);
@@ -70,28 +71,17 @@ function rootReducer(state = initialState, action) {
         }
         return false;
       });
+
       return {
         ...state,
         filteredDrivers: teamsFilter,
         currentPage: 1,
       };
+    
     case FILTER_BY_DB:
       // eslint-disable-next-line no-case-declarations
       let DBDrivers;
 
-      if (state.filteredDrivers.length >= 1) {
-        if (action.payload === "Y") {
-          DBDrivers = state.filteredDrivers.filter((driver) => {
-            return driver.createdInDB === true;
-          });
-        }
-        if (action.payload === "N") {
-          DBDrivers = state.filteredDrivers.filter((driver) => {
-            return driver.createdInDB === false;
-          });
-        }
-      }
-      if (state.filteredDrivers.length === 0) {
         if (action.payload === "Y") {
           DBDrivers = state.drivers.filter((driver) => {
             return driver.createdInDB === true;
@@ -103,7 +93,7 @@ function rootReducer(state = initialState, action) {
           });
         }
          
-      }
+      
       return {
         ...state,
         filteredDrivers: DBDrivers,
@@ -114,7 +104,7 @@ function rootReducer(state = initialState, action) {
       // eslint-disable-next-line no-case-declarations
       let orderedByName;
       // const copyDrivers = state.drivers.slice()
-      if (state.filteredDrivers.length>=1) {
+      if (state.filteredDrivers.length >= 1) {
         if (action.payload === "A") {
           orderedByName = [...state.filteredDrivers].sort((a, b) => {
             return a.forename.localeCompare(b.forename, "en", {
@@ -122,15 +112,15 @@ function rootReducer(state = initialState, action) {
             });
           });
         }
-      if (action.payload === "D") {
-        orderedByName = [...state.filteredDrivers].sort((a, b) => {
-          return b.forename.localeCompare(a.forename, "en", {
-            sensitivity: "base",
+        if (action.payload === "D") {
+          orderedByName = [...state.filteredDrivers].sort((a, b) => {
+            return b.forename.localeCompare(a.forename, "en", {
+              sensitivity: "base",
+            });
           });
-        });
+        }
       }
-      }
-      if (state.filteredDrivers.length===0) {
+      if (state.filteredDrivers.length === 0) {
         if (action.payload === "A") {
           orderedByName = [...state.drivers].sort((a, b) => {
             return a.forename.localeCompare(b.forename, "en", {
@@ -204,6 +194,10 @@ function rootReducer(state = initialState, action) {
     default:
       return state;
   }
+
+
 }
+
+
 
 export default rootReducer
