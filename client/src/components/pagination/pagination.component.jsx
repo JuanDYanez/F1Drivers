@@ -58,18 +58,16 @@ function Pagination({driversPerPage, drivers}) {
       <li key={index}>
         {page === null
           ? (<span>   </span>)
-          : (
-            <a className={page === currentPage ? s.active : ""} onClick={() => onSpecificPage(page)}>{ page }</a>
-          )}
+          : (<a className={page === currentPage ? s.activePage : ""} onClick={() => onSpecificPage(page)}>{ page }</a>)}
       </li>
     ))
   }
 
   return (
     <div className={s.pagination}>
-      <button disabled={ currentPage === 1 ? true : false} onClick={onPreviousPage}>←</button>
-      <div className={s.paginationPages}>{ showPageNumbers()}</div>
-      <button disabled={ currentPage >= pageNumbers.length ? true : false} onClick={onNextPage}>→</button>
+      <button disabled={currentPage === 1 ? true : false} onClick={onPreviousPage}><img className={ s.leftArrow } src={ currentPage === 1 ? "/arrowOff.png" : "/arrowOn.png"}  alt="arrow"/></button>
+      <div>{ showPageNumbers()}</div>
+      <button disabled={ currentPage >= pageNumbers.length ? true : false} onClick={onNextPage}><img className={ s.rightArrow } src={currentPage >= pageNumbers.length ? "/arrowOff.png" : "/arrowOn.png" } alt="arrow"/></button>
     </div>
   );
 }

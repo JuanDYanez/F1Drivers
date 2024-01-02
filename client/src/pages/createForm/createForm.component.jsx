@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useDispatch, useSelector } from "react-redux";
 import s from "./createForm.module.css";
-import { getNationalities, getTeams } from "../../redux/actions";
+import { cleanShowNotFound, getNationalities, getTeams } from "../../redux/actions";
 import { useEffect, useState } from "react";
 import validate from "./validation";
 import axios from 'axios';
@@ -16,6 +16,10 @@ function CreateForm({handleCloseForm}) {
   useEffect(() => {
     dispatch(getTeams());
     dispatch(getNationalities());
+    return (() => {
+      dispatch(cleanShowNotFound());
+    }
+    )
   }, [dispatch]);
   
   const [driverData, setDriverData] = useState({
@@ -189,7 +193,7 @@ function CreateForm({handleCloseForm}) {
               value={driverData.nationality}
               onChange={handleChange}
               onBlur={handleChange}
-              // onBlur={handleBlur}
+              className={s.select}
             >
               <option disabled value="">
                 Selecciona una nacionalidad
@@ -221,7 +225,6 @@ function CreateForm({handleCloseForm}) {
               value={driverData.dob}
               onChange={handleChange}
               onBlur={handleChange}
-              // className={`${errors.password ? s.inputWarning : ""}`}
             />
             <span className={s.textWarning}>{errors.dob}</span>
   
@@ -241,6 +244,7 @@ function CreateForm({handleCloseForm}) {
               value={selectedTeams}
               onChange={handleSelectedTeams}
               onBlur={handleChange}
+              className={s.select}
             >
               <option disabled defaultValue="">
                 Selecciona las escuderías
@@ -255,6 +259,7 @@ function CreateForm({handleCloseForm}) {
   
             <div>
               <button
+                className={s.submitButton}
                 type="submit"
                 disabled={disableSubmitButton()}
                 onClick={handleSubmit}

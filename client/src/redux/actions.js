@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { FILTER_BY_TEAMS, GET_DRIVERS, CLEAN_FILTERED_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, GET_NATIONALITIES, GET_NATIONALITY_FLAG, CLEAR_NATIONALITY_FLAG, NEXT_PAGE, PREV_PAGE, SPECIFIC_PAGE, SET_NOT_FOUND} from './actions-types'
+import { FILTER_BY_TEAMS, GET_DRIVERS, CLEAN_FILTERED_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, GET_NATIONALITIES, GET_NATIONALITY_FLAG, CLEAR_NATIONALITY_FLAG, NEXT_PAGE, PREV_PAGE, SPECIFIC_PAGE, SET_NOT_FOUND, SET_CURRENT_PAGE} from './actions-types'
 
 
 export function getDrivers() {
@@ -21,6 +21,12 @@ export function cleanFilteredDrivers() {
     type: CLEAN_FILTERED_DRIVERS,
     payload: [],
   }
+}
+export function setCurrentPage() {
+  return {
+    type: SET_CURRENT_PAGE,
+    payload: true,
+  };
 }
 export function cleanShowNotFound() {
   return {

@@ -35,7 +35,7 @@ a {
   margin: auto auto;
   margin-top: 20px;
   margin-bottom: 20px;
-  background-color: #000000c6;
+  background-color: rgb(167, 16, 16);
   width: 500px;
   height: auto;
   border-radius: 10px;
@@ -55,8 +55,8 @@ a {
 }
 
 .submitButton {
-  background-color: #08abc3;
-  color: black;
+  background-color: transparent;
+  color: white;
   font-weight: 700;
   font-size: 15px;
   border-radius: 5px;
@@ -68,14 +68,8 @@ a {
 }
 
 .submitButton:active {
-  background-color: #c6d96a;
-  color: rgb(34, 34, 34);
-  text-decoration: none;
-  border: 1px solid transparent;
-  font-weight: 700;
-  font-size: 15px;
-  border-radius: 5px;
-  padding: 8px;
+  background-color: white;
+  color: rgb(167, 16, 16)
 }
 
 .logoF1 {
@@ -100,4 +94,22 @@ fieldset label .spanStar {
   z-index: 1000;
   margin-top: 15px;
   text-decoration: none;
+}
+
+.select {
+  background-color: transparent;
+  border-color: transparent;
+  border-bottom: 1px solid white;
+  color: white;
+}
+
+.select:focus {
+  outline: none;
+}
+
+.select option {
+  background-color: transparent;
+  border-color: transparent;
+  border-bottom: 1px solid white;
+  color: white
 }

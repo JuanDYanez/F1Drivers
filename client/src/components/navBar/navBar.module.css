@@ -47,11 +47,15 @@
   height: 22px;
 }
 
-::placeholder {
-  color: white
+.searchInput:focus {
+  outline: none;
 }
 
-button {
+::placeholder {
+  color: #ffffff50
+}
+
+.searchBar button {
   background-color: transparent;
   border: white 1px solid;
   border-radius: 5px;
@@ -59,15 +63,29 @@ button {
   color: white;
   width: 100px;
   height: 25px;
-  transition: 0.5ms;
+  transition: 300ms;
 }
 
-button:hover {
+.searchBar button:hover {
   background-color: white;
-  border: white 1px solid;
-  border-radius: 5px;
-  padding: 1px;
+  color: rgb(167, 16, 16);
+  font-weight: 700;
+}
+
+.filters select {
+  background-color: transparent;
+  border-color: transparent;
+  border-bottom: 1px solid white;
   color: white;
-  width: 100px;
-  height: 25px;
+}
+
+.filters select:focus {
+  outline: none;
+}
+
+.filters option {
+  background-color: transparent;
+  border-color: transparent;
+  border-bottom: 1px solid white;
+  color: black
 }

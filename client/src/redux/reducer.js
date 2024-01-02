@@ -1,5 +1,5 @@
 /* eslint-disable no-case-declarations */
-import { GET_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, GET_NATIONALITIES, GET_NATIONALITY_FLAG, CLEAR_NATIONALITY_FLAG, NEXT_PAGE, PREV_PAGE, SPECIFIC_PAGE, CLEAN_FILTERED_DRIVERS, SET_NOT_FOUND } from "./actions-types"
+import { GET_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, GET_NATIONALITIES, GET_NATIONALITY_FLAG, CLEAR_NATIONALITY_FLAG, NEXT_PAGE, PREV_PAGE, SPECIFIC_PAGE, CLEAN_FILTERED_DRIVERS, SET_NOT_FOUND, SET_CURRENT_PAGE } from "./actions-types"
 
 let initialState = {
   drivers: [],
@@ -29,7 +29,7 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         filteredDrivers: action.payload,
-        currentPage: 1
+        currentPage: 1,
       };
     case SET_NOT_FOUND:
       return {
@@ -58,7 +58,7 @@ function rootReducer(state = initialState, action) {
       };
     case FILTER_BY_TEAMS:
       // eslint-disable-next-line no-case-declarations
-      
+
       let teamsFilter = state.drivers.filter((driver) => {
         if (!driver.createdInDB) {
           return driver.teams && driver.teams.includes(action.payload);
@@ -77,29 +77,28 @@ function rootReducer(state = initialState, action) {
         filteredDrivers: teamsFilter,
         currentPage: 1,
       };
-    
+
     case FILTER_BY_DB:
       // eslint-disable-next-line no-case-declarations
       let DBDrivers;
 
-        if (action.payload === "Y") {
-          DBDrivers = state.drivers.filter((driver) => {
-            return driver.createdInDB === true;
-          });
-        }
-        if (action.payload === "N") {
-          DBDrivers = state.drivers.filter((driver) => {
-            return driver.createdInDB === false;
-          });
-        }
-         
-      
+      if (action.payload === "Y") {
+        DBDrivers = state.drivers.filter((driver) => {
+          return driver.createdInDB === true;
+        });
+      }
+      if (action.payload === "N") {
+        DBDrivers = state.drivers.filter((driver) => {
+          return driver.createdInDB === false;
+        });
+      }
+
       return {
         ...state,
         filteredDrivers: DBDrivers,
         currentPage: 1,
       };
-    
+
     case ORDER_BY_NAME:
       // eslint-disable-next-line no-case-declarations
       let orderedByName;
@@ -139,9 +138,9 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         drivers: orderedByName,
-        currentPage: 1
+        currentPage: 1,
       };
-    
+
     case ORDER_BY_DOB:
       // eslint-disable-next-line no-case-declarations
       let orderedByDOB;
@@ -173,23 +172,28 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         filteredDrivers: orderedByDOB,
-        currentPage: 1
+        currentPage: 1,
       };
-    
+
     case NEXT_PAGE:
       return {
         ...state,
-        currentPage: action.payload
+        currentPage: action.payload,
       };
     case PREV_PAGE:
       return {
         ...state,
-        currentPage: action.payload
+        currentPage: action.payload,
       };
     case SPECIFIC_PAGE:
       return {
         ...state,
-        currentPage: action.payload
+        currentPage: action.payload,
+      };
+    case SET_CURRENT_PAGE:
+      return {
+        ...state,
+        currentPage: action.payload,
       };
     default:
       return state;

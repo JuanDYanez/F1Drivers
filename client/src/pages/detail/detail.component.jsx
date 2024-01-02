@@ -10,21 +10,29 @@ import { getNationalityFlag, clearNationalityFlag } from '../../redux/actions.js
 function Detail() {
   const { id } = useParams();
   const [driver, setDriver] = useState({})
+  const [isLoading, setIsLoading] = useState(true);
 
   const dispatch = useDispatch()
 
   const nationalityFlag = useSelector((state) => state.nationalityFlag);
 
   useEffect(() => {
-    const fetchDriverData = async () => {
-      try {
-        const { data } = await axios.get(`http://localhost:3001/drivers/${id}`);
-        setDriver(data);
+    const fetchDriverData = () => {
 
-        dispatch(getNationalityFlag(id));
-      } catch (error) {
-        console.error(error);
-      }
+      setIsLoading(true)
+      
+      dispatch(getNationalityFlag(id))
+        .then(() => {
+          return axios.get(`http://localhost:3001/drivers/${id}`);
+        })
+        .then((response) => {
+          setDriver(response.data);
+          setIsLoading(false)
+        })
+        .catch((error) => {
+          console.error(error);
+          setIsLoading(false)
+        })
     }
 
     fetchDriverData();
@@ -45,44 +53,40 @@ function Detail() {
     }
   }
   
-
-  // const DBTeamsToString = () => {
-  //   if (driver.createdInDB === true) {
-
-  //     const teamsToString = driver.Teams.map(team => team.name)
-      
-  //     return {
-  //       ...driver,
-  //       Teams: driver.teams,
-  //     }
-  //   }
-
-
-  //   if (driver.createdInDB === true) {
-  //     return {
-  //       ...driver,
-  //       teams: driver.Teams.map(team => team.name).join(", "),
-  //     }
-  //   }
-    
-  //     return driver;
-  // };
-
-
   return (
     <div className={s.MainContainer}>
       <div className={s.DetailContainer}>
-        <NavLink to='/home' className={s.closeButton}>X</NavLink>
-        <div className={s.leftColumn}>
-          <img src={driver?.image} alt={driver?.forename} />
-        </div>
-        <div className={s.rightColumn}>
-          <h2>{`${driver?.forename} ${driver?.surname}`}</h2>
-          {nationalityFlag && <img className={s.flag} src={nationalityFlag} alt={driver?.nationality}/>}
-          <p>Escuderías: {DBteamsToString()}</p>
-          <p>Nacimiento: {driver?.dob}</p>
-          <p>{driver?.description}</p>
-        </div>
+        <NavLink to="/home" className={s.closeButton}>
+          X
+        </NavLink>
+        
+
+        {isLoading
+          ? <img className={ s.loadingGIF } src="/loading.gif" alt="loadingGIF" />
+          : (
+          <>
+            <div className={s.leftColumn}>
+              <img src={driver?.image} alt={driver?.forename} />
+            </div>
+            <div className={s.rightColumn}>
+              <h2 className={s.driverName}>{`${driver?.forename} ${driver?.surname}`}</h2>
+              {nationalityFlag && (
+                <img
+                  className={s.flag}
+                  src={nationalityFlag}
+                  alt={driver?.nationality}
+                />
+              )}
+              <span className={s.nationalityName}>{driver.nationality}</span>
+              <p className={s.infoTitle}>Nacimiento</p>
+              <p>{driver?.dob}</p>
+              <p className={s.infoTitle}>Escuderías</p>
+              <p>{DBteamsToString()}</p>
+              <p className={s.infoTitle}>Información</p>
+              <p className={s.driverDescription}>{driver?.description}</p>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

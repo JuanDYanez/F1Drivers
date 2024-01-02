@@ -2,7 +2,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 5rem;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    background-color: rgb(211, 211, 211); 
 }
 
 .DetailContainer {
@@ -20,7 +22,6 @@
 .leftColumn {
   height: auto;
   width: 30%;
-  background-color: blueviolet;
   border-right: 3px solid black;
 }
 
@@ -39,6 +40,16 @@
   justify-content:first baseline;
   align-items: center;
   flex-direction: column;
+}
+
+.rightColumn p:nth-child(6) {
+  margin-top: -10px;
+}
+
+.driverName {
+  background-color: black;
+  color: white;
+  margin-bottom: 25px;
 }
 
 .closeButton {
@@ -60,4 +71,28 @@
   width: 50px;
   border: solid .5px rgb(102, 102, 102);
   border-radius: 5px ;
+  margin-top: -20px;
+}
+
+.nationalityName {
+  font-size:smaller
+}
+
+.infoTitle {
+  width: 100%;
+  background-color: rgb(167, 16, 16);
+  color: white;
+  font-weight: 800;
+  font-size:larger;
+  margin-bottom: -10px;
+}
+
+.driverDescription {
+  text-align: justify;
+  margin-top: 25px;
+}
+
+.loadingGIF {
+  width: 100px;
+  margin: auto;
 }

@@ -35,11 +35,19 @@ const controllerGetAllDrivers = async () => {
         
       };
 
+      const parseDescription = () => {
+        if (driver.description === "." || driver.description === undefined) {
+          return "Sin información adicional"
+        } else {
+          return driver.description;
+        }
+      };
+
       return {
         id: driver.id,
         forename: driver.name.forename,
         surname: driver.name.surname,
-        description: driver.description || "Sin información adicional",
+        description: parseDescription(),
         image: parseImg(),
         nationality: driver.nationality,
         dob: driver.dob,

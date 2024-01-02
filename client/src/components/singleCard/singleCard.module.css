@@ -1,16 +1,17 @@
 .CardContainer {
   width: 300px;
-  height: 400px;
+  height: 390px;
   overflow: hidden;
+  margin: 10px;
   background-color: black;
-  margin: 1rem;
+  color: white;
   border-radius: 10px;
   text-decoration: none;
   position: relative;
 }
 
 .cardHeader {
-  background-color: black;
+  background-color: rgb(167, 16, 16);
   position: absolute;
   top: 0;
   height: 30px;
@@ -22,7 +23,7 @@
 .cardHeader h4 {
   width: 260px;
   white-space: wrap;
-  margin: 3px 0 0 0;
+  margin: 5px 0 0 0;
   color: white;
 }
 
@@ -44,11 +45,15 @@
 .teamsTitle {
   margin: 5px;
   font-weight: 700;
-  color: white;
+  margin-top: 10px;
 }
 
 .teams {
   margin: 0px 20px 0px 20px;
   font-size: small;
-  color: white;
+}
+
+.infoContainer {
+  background-color: white;
+  color: black;
 }
