@@ -1,5 +1,13 @@
 {
   "devDependencies": {
     "vite": "^5.0.11"
+  },
+  "dependencies": {
+    "gh-pages": "^6.1.1"
+  },
+  "homepage": "https://juandyanez.github.io/PI-Drivers/",
+  "scripts": {
+    "predeploy": "vite build",
+    "deploy": "gh-pages -d build"
   }
 }
