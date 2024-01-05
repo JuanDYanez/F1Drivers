@@ -11,9 +11,10 @@ export default function CardsContainer({drivers}) {
 
   const currentPage = useSelector((state) => state.currentPage)
 
-  const lastIndex = currentPage * driversPerPage
-  const firstIndex = lastIndex - driversPerPage
+  const lastIndex = currentPage * driversPerPage  
+  const firstIndex = lastIndex - driversPerPage  
   
+  console.log(currentPage)
   return (
     <div className={s.MainContainer}>
       <div className={s.CardsContainer}>

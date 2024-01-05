@@ -1,9 +1,19 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react"; 
+import { useEffect, useState } from "react"; 
 
 import s from "./navBar.module.css";
-function NavBar({ onSearch, teams, teamsFilter, DBFilter, orderByName, orderByDOB, getAllDrivers, handleCreateButton, handleCloseForm }) {
+import { useDispatch, useSelector } from "react-redux";
+import { getLocalNationalities } from "../../redux/actions";
+function NavBar({ onSearch, teams, teamsFilter, nationalityFilter, DBFilter, orderByName, orderByDOB, getAllDrivers, handleCreateButton }) {
+  
+  const dispatch = useDispatch();
+
   const [name, setName] = useState("");
+  const localNationalities = useSelector((state) => state.localNationalities)
+
+  useEffect(() => {
+    dispatch(getLocalNationalities());
+  }, [dispatch]);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -14,46 +24,36 @@ function NavBar({ onSearch, teams, teamsFilter, DBFilter, orderByName, orderByDO
     if (e.key === "Enter") {
       onSearch(name);
       setName("");
-
-      handleCloseForm();
     }
   };
 
   const handleSubmit = () => {
     onSearch(name);
     setName("");
-
-    handleCloseForm();
   }
 
-  const handleSubmitAllDrivers = () => {
+  const handleSubmitAllDrivers = () => {    
     getAllDrivers();
-
-    handleCloseForm();
   }
   
   const handleFilterByTeams = (e) => {
     teamsFilter(e.target.value)
+  }
 
-    handleCloseForm();
+  const handleFilterByNationality = (e) => {
+    nationalityFilter(e.target.value)
   }
 
   const handleFilterDB = (e) => {
     DBFilter(e.target.value)
-
-    handleCloseForm();
   }
 
   const handleOrderByName = (e) => {
     orderByName(e.target.value)
-
-    handleCloseForm()
   }
 
   const handleOrderByDOB = (e) => {
     orderByDOB(e.target.value)
-
-    handleCloseForm();
   }
 
   return (
@@ -80,6 +80,16 @@ function NavBar({ onSearch, teams, teamsFilter, DBFilter, orderByName, orderByDO
           </button>
         </div>
         <div className={s.filters}>
+          <select onChange={handleFilterByNationality} defaultValue="">
+            <option disabled value="">
+              Filtra por nacionalidad
+            </option>
+            {localNationalities?.map((nationality, key) => (
+              <option key={key} value={nationality}>
+                {nationality}
+              </option>
+            ))}
+          </select>
           <select onChange={handleFilterByTeams} defaultValue="">
             <option disabled value="">
               Filtra por escudería
@@ -113,7 +123,7 @@ function NavBar({ onSearch, teams, teamsFilter, DBFilter, orderByName, orderByDO
           </select>
         </div>
       </div>
-      <img className={s.rightFlag } src="/racingFlag.webp" alt="racingFlag" />
+      <img className={s.rightFlag} src="/racingFlag.webp" alt="racingFlag" />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 /* eslint-disable no-case-declarations */
-import { GET_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, GET_NATIONALITIES, GET_NATIONALITY_FLAG, CLEAR_NATIONALITY_FLAG, NEXT_PAGE, PREV_PAGE, SPECIFIC_PAGE, CLEAN_FILTERED_DRIVERS, SET_NOT_FOUND, SET_CURRENT_PAGE } from "./actions-types"
+import { GET_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_TEAMS, FILTER_BY_NATIONALITY, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, GET_NATIONALITIES, GET_NATIONALITY_FLAG, CLEAR_NATIONALITY_FLAG, NEXT_PAGE, PREV_PAGE, SPECIFIC_PAGE, CLEAN_FILTERED_DRIVERS, SET_NOT_FOUND, SET_CURRENT_PAGE, SET_SEARCHED, GET_LOCAL_NATIONALITIES } from "./actions-types"
 
 let initialState = {
   drivers: [],
@@ -7,10 +7,12 @@ let initialState = {
   copyDrivers: [],
   teams: [],
   nationalities: [],
+  localNationalities: [],
   driverData: [],
   nationalityFlag: "",
   currentPage: 1,
   showNotFound: false,
+  searched: false,
 }
 
 function rootReducer(state = initialState, action) {
@@ -30,6 +32,7 @@ function rootReducer(state = initialState, action) {
         ...state,
         filteredDrivers: action.payload,
         currentPage: 1,
+        showNotFound: false,
       };
     case SET_NOT_FOUND:
       return {
@@ -45,6 +48,11 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         nationalities: action.payload,
+      };
+    case GET_LOCAL_NATIONALITIES:
+      return {
+        ...state,
+        localNationalities: action.payload,
       };
     case GET_NATIONALITY_FLAG:
       return {
@@ -75,6 +83,18 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         filteredDrivers: teamsFilter,
+        currentPage: 1,
+      };
+
+    case FILTER_BY_NATIONALITY:
+      // eslint-disable-next-line no-case-declarations
+
+      let nationalityFilter = state.drivers.filter((driver) => 
+      driver.nationality === action.payload);
+
+      return {
+        ...state,
+        filteredDrivers: nationalityFilter,
         currentPage: 1,
       };
 
@@ -194,6 +214,11 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         currentPage: action.payload,
+      };
+    case SET_SEARCHED:
+      return {
+        ...state,
+        searched: action.payload,
       };
     default:
       return state;

@@ -1,24 +1,26 @@
+/* eslint-disable no-useless-escape */
 const validate = (input) => {
   let errors = {}
+  const dobRegex = /^\d{4}\/(0?[1-9]|1[012])\/(0?[1-9]|[12][0-9]|3[01])$/;
   
   !input.forename
-    ? errors = { ...errors, forename: "Debes ingresar un nombre" }
+    ? errors = { ...errors, forename: "Ingresa un nombre" }
     : errors = { ...errors, forename: "" }
   
   !input.surname
-    ? errors = { ...errors, surname: "Debes ingresar un apellido" }
+    ? errors = { ...errors, surname: "Ingresa un apellido" }
     : errors = { ...errors, surname: "" }
   
   !input.nationality
-    ? errors = { ...errors, nationality: "Debes seleccionar una nacionalidad" }
+    ? errors = { ...errors, nationality: "Selecciona una nacionalidad" }
     : errors = { ...errors, nationality: "" }
   
-  !input.dob
-    ? errors = { ...errors, dob: "Debes ingresar la fecha de nacimiento" }
+  errors.dob = !dobRegex.test(input.dob)
+    ? errors = { ...errors, dob: "Ingresa una fecha correcta en el formato AAAA/MM/DD" }
     : errors = { ...errors, dob: "" }
   
   !input.teams
-    ? errors = { ...errors, teams: "Debes seleccionar los equipos" }
+    ? errors = { ...errors, teams: "Selecciona los equipos" }
     : errors = { ...errors, teams: "" }
   
 

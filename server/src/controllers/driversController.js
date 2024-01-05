@@ -233,6 +233,26 @@ const controllerGetAllNationalities = async () => {
 
   }
 };
+const controllerGetLocalNationalities = async () => {
+  
+  try {
+
+    const { data } = await axios.get("http://localhost:3001/drivers");
+
+    const allNationalities = data.map((driver) => driver.nationality);
+
+    const uniqueNationalities = [...new Set(allNationalities)].sort((a, b) => {
+      return a.localeCompare(b)
+    });
+
+    return uniqueNationalities;
+
+  } catch (error) {
+    throw new Error(error.message);    
+
+  }
+
+};
 
 
 module.exports = {
@@ -241,5 +261,6 @@ module.exports = {
   controllerGetAllDrivers,
   controllerGetDriverByName,
   controllerGetAllNationalities,
+  controllerGetLocalNationalities,
   controllerGetFlagByDriver,
 };

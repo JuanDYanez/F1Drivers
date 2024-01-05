@@ -5,7 +5,7 @@ import s from "./detail.module.css";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { getNationalityFlag, clearNationalityFlag } from '../../redux/actions.js';
+import { getNationalityFlag, clearNationalityFlag, setSearched } from '../../redux/actions.js';
 
 function Detail() {
   const { id } = useParams();
@@ -52,11 +52,15 @@ function Detail() {
       return driver.teams
     }
   }
+
+  function handleCloseDetail () {
+    dispatch(setSearched(false))
+  } 
   
   return (
     <div className={s.MainContainer}>
       <div className={s.DetailContainer}>
-        <NavLink to="/home" className={s.closeButton}>
+        <NavLink to="/home" className={s.closeButton} onClick={handleCloseDetail}>
           X
         </NavLink>
         

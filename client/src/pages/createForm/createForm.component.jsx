@@ -76,6 +76,8 @@ function CreateForm({handleCloseForm}) {
 
     setSelectedTeams(selectedOptions)
 
+    console.log(selectedOptions)
+
   }
 
   const handleSubmit = async (e) => {
@@ -244,12 +246,12 @@ function CreateForm({handleCloseForm}) {
               value={selectedTeams}
               onChange={handleSelectedTeams}
               onBlur={handleChange}
-              className={s.select}
+              className={s.multipleSelect}
             >
               <option disabled defaultValue="">
                 Selecciona las escuderías
               </option>
-              {teams?.map((team) => (
+              {teams.map((team) => (
                 <option key={team.id} value={team.name}>
                   {team.name}
                 </option>
@@ -259,7 +261,7 @@ function CreateForm({handleCloseForm}) {
   
             <div>
               <button
-                className={s.submitButton}
+                className={disableSubmitButton() ? s.submitButtonOff : s.submitButtonOn}
                 type="submit"
                 disabled={disableSubmitButton()}
                 onClick={handleSubmit}

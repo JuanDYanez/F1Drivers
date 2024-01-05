@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { FILTER_BY_TEAMS, GET_DRIVERS, CLEAN_FILTERED_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, GET_NATIONALITIES, GET_NATIONALITY_FLAG, CLEAR_NATIONALITY_FLAG, NEXT_PAGE, PREV_PAGE, SPECIFIC_PAGE, SET_NOT_FOUND, SET_CURRENT_PAGE} from './actions-types'
+import { FILTER_BY_TEAMS, FILTER_BY_NATIONALITY, GET_DRIVERS, CLEAN_FILTERED_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, GET_NATIONALITIES, GET_NATIONALITY_FLAG, CLEAR_NATIONALITY_FLAG, NEXT_PAGE, PREV_PAGE, SPECIFIC_PAGE, SET_NOT_FOUND, SET_CURRENT_PAGE, SET_SEARCHED, GET_LOCAL_NATIONALITIES} from './actions-types'
 
 
 export function getDrivers() {
@@ -25,7 +25,7 @@ export function cleanFilteredDrivers() {
 export function setCurrentPage() {
   return {
     type: SET_CURRENT_PAGE,
-    payload: true,
+    payload: 1,
   };
 }
 export function cleanShowNotFound() {
@@ -61,6 +61,22 @@ export function getNationalities() {
   }
 } 
 
+export function getLocalNationalities() {
+  return async function (dispatch) {
+    try {
+      const { data } = await axios.get(
+        "http://localhost:3001/drivers/localnationalities"
+      );
+      return dispatch({
+        type: GET_LOCAL_NATIONALITIES,
+        payload: data,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+} 
+
 export function getNationalityFlag(id) {
   return async function (dispatch) {
     try {
@@ -91,10 +107,12 @@ export const getDriverByName = (name) => {
     try {
       const endpoint = `http://localhost:3001/drivers/name?name=${name}`;
       const response = await axios.get(endpoint)   
-        dispatch({
-          type: GET_DRIVER_BY_NAME,
-          payload: response.data
-        });
+        dispatch(
+          {
+            type: GET_DRIVER_BY_NAME,
+            payload: response.data,
+          }
+        );
     } catch (error) {
       console.error(error)
       if (error.response.status === 404) {
@@ -110,6 +128,12 @@ export const filterByTeams = (team) => {
   return {
       type: FILTER_BY_TEAMS,
       payload: team
+    }
+}
+export const filterNationality = (nationality) => {
+  return {
+      type: FILTER_BY_NATIONALITY,
+      payload: nationality,
     }
 }
 export const createdInDB = (boolean) => {
@@ -157,3 +181,10 @@ export const specificPage = (page) => {
     });
   }
 }
+
+export const setSearched = (boolean) => {
+  return {
+      type: SET_SEARCHED,
+      payload: boolean,
+    }
+};

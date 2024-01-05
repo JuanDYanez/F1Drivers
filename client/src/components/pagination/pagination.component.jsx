@@ -37,7 +37,7 @@ function Pagination({driversPerPage, drivers}) {
       displayPages.push(...pageNumbers)
     } else {
       const startPage = Math.max(1, currentPage);
-      const endPage = Math.min(startPage + maxPagesToShow - 1, totalPages)
+      const endPage = Math.min(startPage + maxPagesToShow  - 1, totalPages)
 
       if (startPage > 1) {
         displayPages.push(1);
@@ -58,7 +58,7 @@ function Pagination({driversPerPage, drivers}) {
       <li key={index}>
         {page === null
           ? (<span>   </span>)
-          : (<a className={page === currentPage ? s.activePage : ""} onClick={() => onSpecificPage(page)}>{ page }</a>)}
+          : (<a className={page === currentPage ? s.activePage : s.regularPage} onClick={() => onSpecificPage(page)}>{ page }</a>)}
       </li>
     ))
   }
