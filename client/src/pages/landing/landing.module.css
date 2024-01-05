@@ -10,7 +10,7 @@
 }
 
 .content {
-  margin-top: 250px;
+  margin-top: 150px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -36,8 +36,7 @@
   color: rgb(187, 26, 26);
 }
 h1 {
-  margin-top: 10px;
-  width: auto;
+  width: 50%;
   height: auto;
 }
 
