@@ -2,7 +2,7 @@
 import { NavLink } from "react-router-dom";
 import s from "./singleCard.module.css";
 
-function SingleCard({driver}) {
+function SingleCard({driver, currentPage}) {
   const { id, forename, surname, image, teams, Teams, createdInDB } = driver;
 
   const DBteamsToString = () => {
@@ -16,7 +16,7 @@ function SingleCard({driver}) {
   };
 
   return (
-    <NavLink className={s.CardContainer} to={`/driver/${id}`}>
+    <NavLink className={s.CardContainer} to={`/driver/${id}?currentPage=${currentPage}`}>
       <div>
         <div className={s.cardImage}>
           <img src={image} alt="driver-image" />
