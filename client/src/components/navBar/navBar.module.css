@@ -33,7 +33,9 @@
   border-radius: 10px;
   padding: 20px;
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
+  width: 85%;
 }
 
 .filters select {
@@ -55,7 +57,7 @@
   color: #ffffff50
 }
 
-.searchBar button {
+.navBarButton {
   background-color: transparent;
   border: white 1px solid;
   border-radius: 5px;
@@ -66,7 +68,7 @@
   transition: 300ms;
 }
 
-.searchBar button:hover {
+.navBarButton:hover {
   background-color: white;
   color: rgb(167, 16, 16);
   font-weight: 700;
@@ -88,4 +90,8 @@
   border-color: transparent;
   border-bottom: 1px solid white;
   color: black
+}
+
+.cleanFilters {
+  margin-top: 10px;
 }

@@ -69,13 +69,13 @@ function NavBar({ onSearch, teams, teamsFilter, nationalityFilter, DBFilter, ord
             value={name}
             className={s.searchInput}
           />
-          <button type="submit" onClick={handleSubmit}>
+          <button className={s.navBarButton} type="submit" onClick={handleSubmit}>
             Buscar
           </button>
-          <button type="submit" onClick={handleSubmitAllDrivers}>
+          <button className={s.navBarButton} type="submit" onClick={handleSubmitAllDrivers}>
             Todos
           </button>
-          <button type="submit" onClick={handleCreateButton}>
+          <button className={s.navBarButton} type="submit" onClick={handleCreateButton}>
             Crear nuevo
           </button>
         </div>
@@ -121,6 +121,11 @@ function NavBar({ onSearch, teams, teamsFilter, nationalityFilter, DBFilter, ord
             <option value="A">↧</option>
             <option value="D">↥</option>
           </select>
+        </div>
+        <div className={s.cleanFilters}>
+          <button className={s.navBarButton} type="submit" >
+            Limpiar filtros
+          </button>
         </div>
       </div>
       <img className={s.rightFlag} src="/racingFlag.webp" alt="racingFlag" />

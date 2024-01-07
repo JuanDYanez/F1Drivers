@@ -84,6 +84,22 @@ const controllerGetDriverById = async (id) => {
   
 };
 
+
+const controllerDeleteDriver = async (id) => {
+  
+  const allDrivers = await controllerGetAllDrivers();
+  
+  try {
+    
+    const resultDrivers = allDrivers.filter((driver) => String(driver.id) !== String(id))
+
+    return resultDrivers;
+    
+  } catch (error) {
+    console.error(error)
+  }
+};
+
 const controllerGetFlagByDriver = async (id) => {
   try {
     const driverNationality = (await controllerGetDriverById(id)).nationality;
@@ -263,4 +279,5 @@ module.exports = {
   controllerGetAllNationalities,
   controllerGetLocalNationalities,
   controllerGetFlagByDriver,
+  controllerDeleteDriver,
 };

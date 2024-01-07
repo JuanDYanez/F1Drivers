@@ -19,6 +19,7 @@ function Home() {
   const searched = useSelector((state) => state.searched)
   const showNotFound = useSelector((state) => state.showNotFound)
   const drivers = useSelector((state) => state.drivers);
+  const copyDrivers = useSelector((state) => state.copyDrivers);
   const filteredDrivers = useSelector((state) => state.filteredDrivers);
   const teams = useSelector((state) => state.teams);
 

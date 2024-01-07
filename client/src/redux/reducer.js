@@ -3,8 +3,8 @@ import { GET_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_TEAMS, FILTER_BY_
 
 let initialState = {
   drivers: [],
-  filteredDrivers: [],
   copyDrivers: [],
+  filteredDrivers: [],
   teams: [],
   nationalities: [],
   localNationalities: [],
@@ -21,6 +21,7 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         drivers: action.payload,
+        copyDrivers: action.payload,
       };
     case CLEAN_FILTERED_DRIVERS:
       return {
@@ -31,6 +32,7 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         filteredDrivers: action.payload,
+        copyDrivers: action.payload,
         currentPage: 1,
         showNotFound: false,
       };
@@ -83,6 +85,7 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         filteredDrivers: teamsFilter,
+        copyDrivers: teamsFilter,
         currentPage: 1,
       };
 
@@ -95,6 +98,7 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         filteredDrivers: nationalityFilter,
+        copyDrivers: nationalityFilter,
         currentPage: 1,
       };
 
@@ -116,6 +120,7 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         filteredDrivers: DBDrivers,
+        copyDrivers: DBDrivers,
         currentPage: 1,
       };
 

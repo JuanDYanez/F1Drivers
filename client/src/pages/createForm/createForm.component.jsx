@@ -76,8 +76,6 @@ function CreateForm({handleCloseForm}) {
 
     setSelectedTeams(selectedOptions)
 
-    console.log(selectedOptions)
-
   }
 
   const handleSubmit = async (e) => {
