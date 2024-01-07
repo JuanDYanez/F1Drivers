@@ -26,7 +26,6 @@ function NavBar({ onSearch, teams, teamsFilter, nationalityFilter, DBFilter, ord
         const { data } = await axios.get(
           "http://localhost:3001/drivers/localnationalities"
         );
-        console.log(data)
         return setLocalNationalities(data)
       } catch (error) {
         console.error(error);

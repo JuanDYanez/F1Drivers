@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getDrivers, getDriverByName, getTeams, filterByTeams, createdInDB, setOrderByName, setOrderByDOB, cleanFilteredDrivers, cleanShowNotFound, setCurrentPage, setSearched, filterNationality } from "../../redux/actions.js";
+import { getDrivers, getDriverByName, getTeams, filterByTeams, createdInDB, setOrderByName, setOrderByDOB, cleanFilteredDrivers, cleanShowNotFound, setSearched, filterNationality } from "../../redux/actions.js";
 
 import CardsContainer from "../../components/cardsContainer/cardsContainer.component.jsx";
 import NavBar from "../../components/navBar/navBar.component.jsx";
@@ -39,7 +39,6 @@ function Home() {
     dispatch(getDrivers());
     dispatch(cleanShowNotFound())
     dispatch(setSearched(false))
-    dispatch(setCurrentPage())
     setShowForm(false)
   }
 

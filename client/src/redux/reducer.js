@@ -1,13 +1,11 @@
 /* eslint-disable no-case-declarations */
-import { GET_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_TEAMS, FILTER_BY_NATIONALITY, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, NEXT_PAGE, PREV_PAGE, SPECIFIC_PAGE, CLEAN_FILTERED_DRIVERS, SET_NOT_FOUND, SET_CURRENT_PAGE, SET_SEARCHED } from "./actions-types"
+import { GET_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_TEAMS, FILTER_BY_NATIONALITY, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, CLEAN_FILTERED_DRIVERS, SET_NOT_FOUND, SET_SEARCHED } from "./actions-types"
 
 let initialState = {
   drivers: [],
   copyDrivers: [],
   filteredDrivers: [],
   teams: [],
-  driverData: [],
-  currentPage: 1,
   showNotFound: false,
   searched: false,
 }
@@ -30,7 +28,6 @@ function rootReducer(state = initialState, action) {
         ...state,
         filteredDrivers: action.payload,
         copyDrivers: action.payload,
-        currentPage: 1,
         showNotFound: false,
       };
     case SET_NOT_FOUND:
@@ -79,7 +76,6 @@ function rootReducer(state = initialState, action) {
       ...state,
       filteredDrivers: teamsFilter,
       copyDrivers: teamsFilter,
-      currentPage: 1,
     };
     
     case FILTER_BY_NATIONALITY:
@@ -103,7 +99,6 @@ function rootReducer(state = initialState, action) {
         ...state,
         filteredDrivers: nationalityFilter,
         copyDrivers: nationalityFilter,
-        currentPage: 1,
       };
 
     case FILTER_BY_DB:
@@ -140,7 +135,6 @@ function rootReducer(state = initialState, action) {
         ...state,
         filteredDrivers: DBDrivers,
         copyDrivers: DBDrivers,
-        currentPage: 1,
       };
 
     case ORDER_BY_NAME:
@@ -182,7 +176,6 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         drivers: orderedByName,
-        currentPage: 1,
       };
 
     case ORDER_BY_DOB:
@@ -216,28 +209,6 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         filteredDrivers: orderedByDOB,
-        currentPage: 1,
-      };
-
-    case NEXT_PAGE:
-      return {
-        ...state,
-        currentPage: action.payload,
-      };
-    case PREV_PAGE:
-      return {
-        ...state,
-        currentPage: action.payload,
-      };
-    case SPECIFIC_PAGE:
-      return {
-        ...state,
-        currentPage: action.payload,
-      };
-    case SET_CURRENT_PAGE:
-      return {
-        ...state,
-        currentPage: action.payload,
       };
     case SET_SEARCHED:
       return {
