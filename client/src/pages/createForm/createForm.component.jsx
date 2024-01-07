@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useDispatch, useSelector } from "react-redux";
 import s from "./createForm.module.css";
-import { cleanShowNotFound, getNationalities, getTeams } from "../../redux/actions";
+import { cleanShowNotFound, getTeams } from "../../redux/actions";
 import { useEffect, useState } from "react";
 import validate from "./validation";
 import axios from 'axios';
@@ -10,12 +10,23 @@ function CreateForm({handleCloseForm}) {
 
   const dispatch = useDispatch()
 
-  const nationalities = useSelector((state) => state.nationalities);
+  const [nationalities, setNationalities] = useState()
   const teams = useSelector((state) => state.teams);
+
+  async function getNationalities() {
+      try {
+        const { data } = await axios.get(
+          "http://localhost:3001/drivers/nationalities"
+        );
+        return setNationalities(data)
+      } catch (error) {
+        console.error(error);
+      }
+    }
 
   useEffect(() => {
     dispatch(getTeams());
-    dispatch(getNationalities());
+    getNationalities();
     return (() => {
       dispatch(cleanShowNotFound());
     }

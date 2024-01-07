@@ -4,24 +4,35 @@ import { useParams } from "react-router-dom";
 import s from "./detail.module.css";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { useDispatch, useSelector } from 'react-redux';
-import { getNationalityFlag, clearNationalityFlag, setSearched } from '../../redux/actions.js';
+import { useDispatch } from 'react-redux';
+import { setSearched } from '../../redux/actions.js';
 
 function Detail() {
   const { id } = useParams();
   const [driver, setDriver] = useState({})
   const [isLoading, setIsLoading] = useState(true);
+  const [nationalityFlag, setNationalityFlag] = useState("")
 
   const dispatch = useDispatch()
 
-  const nationalityFlag = useSelector((state) => state.nationalityFlag);
+  async function getNationalityFlag(id) {
+      try {
+        const { data } = await axios.get(
+          `http://localhost:3001/drivers/flag/${id}`
+        );
 
+        return setNationalityFlag(data)
+      } catch (error) {
+        console.error(error);
+      }
+  }
+  
   useEffect(() => {
     const fetchDriverData = () => {
 
       setIsLoading(true)
       
-      dispatch(getNationalityFlag(id))
+      getNationalityFlag(id)
         .then(() => {
           return axios.get(`http://localhost:3001/drivers/${id}`);
         })
@@ -38,7 +49,7 @@ function Detail() {
     fetchDriverData();
     
     return () => {
-      dispatch(clearNationalityFlag());
+      setNationalityFlag("");
     };
   }, [id]);
 

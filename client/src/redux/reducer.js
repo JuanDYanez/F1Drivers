@@ -1,15 +1,12 @@
 /* eslint-disable no-case-declarations */
-import { GET_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_TEAMS, FILTER_BY_NATIONALITY, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, GET_NATIONALITIES, GET_NATIONALITY_FLAG, CLEAR_NATIONALITY_FLAG, NEXT_PAGE, PREV_PAGE, SPECIFIC_PAGE, CLEAN_FILTERED_DRIVERS, SET_NOT_FOUND, SET_CURRENT_PAGE, SET_SEARCHED, GET_LOCAL_NATIONALITIES } from "./actions-types"
+import { GET_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_TEAMS, FILTER_BY_NATIONALITY, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, NEXT_PAGE, PREV_PAGE, SPECIFIC_PAGE, CLEAN_FILTERED_DRIVERS, SET_NOT_FOUND, SET_CURRENT_PAGE, SET_SEARCHED } from "./actions-types"
 
 let initialState = {
   drivers: [],
   copyDrivers: [],
   filteredDrivers: [],
   teams: [],
-  nationalities: [],
-  localNationalities: [],
   driverData: [],
-  nationalityFlag: "",
   currentPage: 1,
   showNotFound: false,
   searched: false,
@@ -46,54 +43,61 @@ function rootReducer(state = initialState, action) {
         ...state,
         teams: action.payload,
       };
-    case GET_NATIONALITIES:
-      return {
-        ...state,
-        nationalities: action.payload,
-      };
-    case GET_LOCAL_NATIONALITIES:
-      return {
-        ...state,
-        localNationalities: action.payload,
-      };
-    case GET_NATIONALITY_FLAG:
-      return {
-        ...state,
-        nationalityFlag: action.payload,
-      };
-    case CLEAR_NATIONALITY_FLAG:
-      return {
-        ...state,
-        nationalityFlag: action.payload,
-      };
     case FILTER_BY_TEAMS:
       // eslint-disable-next-line no-case-declarations
+      let teamsFilter;
+      
+      if (state.filteredDrivers.length === 0) {
+        teamsFilter = state.drivers.filter((driver) => {
+          if (!driver.createdInDB) {
+            return driver.teams && driver.teams.includes(action.payload);
+          }
+          if (driver.createdInDB) {
+            return (
+              driver.Teams &&
+              driver.Teams.some((team) => team.name === action.payload)
+            );
+          }
+        });
+      }
 
-      let teamsFilter = state.drivers.filter((driver) => {
-        if (!driver.createdInDB) {
-          return driver.teams && driver.teams.includes(action.payload);
-        }
-        if (driver.createdInDB) {
-          return (
-            driver.Teams &&
-            driver.Teams.some((team) => team.name === action.payload)
-          );
-        }
-        return false;
-      });
+      if (state.filteredDrivers.length >= 1) {
+        teamsFilter = state.filteredDrivers.filter((driver) => {
+          if (!driver.createdInDB) {
+            return driver.teams && driver.teams.includes(action.payload);
+          }
+          if (driver.createdInDB) {
+            return (
+              driver.Teams &&
+              driver.Teams.some((team) => team.name === action.payload)
+            );
+          }
+        });
+      }
 
-      return {
-        ...state,
-        filteredDrivers: teamsFilter,
-        copyDrivers: teamsFilter,
-        currentPage: 1,
-      };
-
+    return {
+      ...state,
+      filteredDrivers: teamsFilter,
+      copyDrivers: teamsFilter,
+      currentPage: 1,
+    };
+    
     case FILTER_BY_NATIONALITY:
       // eslint-disable-next-line no-case-declarations
 
-      let nationalityFilter = state.drivers.filter((driver) => 
-      driver.nationality === action.payload);
+      let nationalityFilter;
+
+      if (state.filteredDrivers.length === 0) {
+        nationalityFilter = state.drivers.filter(
+          (driver) => driver.nationality === action.payload
+        );
+      }
+
+      if (state.filteredDrivers.length >= 1) {
+        nationalityFilter = state.filteredDrivers.filter(
+          (driver) => driver.nationality === action.payload
+        );
+      }
 
       return {
         ...state,
@@ -106,15 +110,30 @@ function rootReducer(state = initialState, action) {
       // eslint-disable-next-line no-case-declarations
       let DBDrivers;
 
-      if (action.payload === "Y") {
-        DBDrivers = state.drivers.filter((driver) => {
-          return driver.createdInDB === true;
-        });
+      if (state.filteredDrivers.length === 0) {
+        if (action.payload === "Y") {
+          DBDrivers = state.drivers.filter((driver) => {
+            return driver.createdInDB === true;
+          });
+        }
+        if (action.payload === "N") {
+          DBDrivers = state.drivers.filter((driver) => {
+            return driver.createdInDB === false;
+          });
+        }
       }
-      if (action.payload === "N") {
-        DBDrivers = state.drivers.filter((driver) => {
-          return driver.createdInDB === false;
-        });
+
+      if (state.filteredDrivers.length >= 1) {
+        if (action.payload === "Y") {
+          DBDrivers = state.filteredDrivers.filter((driver) => {
+            return driver.createdInDB === true;
+          });
+        }
+        if (action.payload === "N") {
+          DBDrivers = state.filteredDrivers.filter((driver) => {
+            return driver.createdInDB === false;
+          });
+        }
       }
 
       return {

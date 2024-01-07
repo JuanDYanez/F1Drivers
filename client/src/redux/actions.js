@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { FILTER_BY_TEAMS, FILTER_BY_NATIONALITY, GET_DRIVERS, CLEAN_FILTERED_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, GET_NATIONALITIES, GET_NATIONALITY_FLAG, CLEAR_NATIONALITY_FLAG, NEXT_PAGE, PREV_PAGE, SPECIFIC_PAGE, SET_NOT_FOUND, SET_CURRENT_PAGE, SET_SEARCHED, GET_LOCAL_NATIONALITIES} from './actions-types'
+import { FILTER_BY_TEAMS, FILTER_BY_NATIONALITY, GET_DRIVERS, CLEAN_FILTERED_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, NEXT_PAGE, PREV_PAGE, SPECIFIC_PAGE, SET_NOT_FOUND, SET_CURRENT_PAGE, SET_SEARCHED} from './actions-types'
 
 
 export function getDrivers() {
@@ -47,59 +47,6 @@ export function getTeams() {
     }
   }
 } 
-export function getNationalities() {
-  return async function (dispatch) {
-    try {
-      const {data} = await axios.get("http://localhost:3001/drivers/nationalities");
-      return dispatch({
-        type: GET_NATIONALITIES,
-        payload: data,
-      });
-    } catch (error) {
-      console.error(error)
-    }
-  }
-} 
-
-export function getLocalNationalities() {
-  return async function (dispatch) {
-    try {
-      const { data } = await axios.get(
-        "http://localhost:3001/drivers/localnationalities"
-      );
-      return dispatch({
-        type: GET_LOCAL_NATIONALITIES,
-        payload: data,
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-} 
-
-export function getNationalityFlag(id) {
-  return async function (dispatch) {
-    try {
-      const { data } = await axios.get(`http://localhost:3001/drivers/flag/${id}`)
-    
-      return dispatch({
-        type: GET_NATIONALITY_FLAG,
-        payload: data
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }
-}
-
-export function clearNationalityFlag() {
-  return async function (dispatch) {
-      return dispatch({
-        type: CLEAR_NATIONALITY_FLAG,
-        payload: "",
-      });
-  };
-}
 
 export const getDriverByName = (name) => {
   

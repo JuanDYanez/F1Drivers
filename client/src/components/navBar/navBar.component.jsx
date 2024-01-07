@@ -2,18 +2,40 @@
 import { useEffect, useState } from "react"; 
 
 import s from "./navBar.module.css";
-import { useDispatch, useSelector } from "react-redux";
-import { getLocalNationalities } from "../../redux/actions";
+import { useDispatch } from "react-redux";
+import { cleanFilteredDrivers } from "../../redux/actions";
+import axios from "axios";
 function NavBar({ onSearch, teams, teamsFilter, nationalityFilter, DBFilter, orderByName, orderByDOB, getAllDrivers, handleCreateButton }) {
-  
+
   const dispatch = useDispatch();
 
   const [name, setName] = useState("");
-  const localNationalities = useSelector((state) => state.localNationalities)
+  const [localNationalities, setLocalNationalities] = useState([])
+  const [filterValues, setFilterValues] = useState({
+    team: "",
+    nationality: "",
+    dbFilter: "",
+    orderByName: "",
+    orderByDOB: "",
+  });
+
+  const [forceRender, setForceRender] = useState(true)
+
+  async function getLocalNationalities () {
+      try {
+        const { data } = await axios.get(
+          "http://localhost:3001/drivers/localnationalities"
+        );
+        console.log(data)
+        return setLocalNationalities(data)
+      } catch (error) {
+        console.error(error);
+      }
+    }
 
   useEffect(() => {
-    dispatch(getLocalNationalities());
-  }, [dispatch]);
+    getLocalNationalities();
+  }, []);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -37,27 +59,56 @@ function NavBar({ onSearch, teams, teamsFilter, nationalityFilter, DBFilter, ord
   }
   
   const handleFilterByTeams = (e) => {
-    teamsFilter(e.target.value)
+    const value = e.target.value
+    setFilterValues((values) => ({...values, team: value}))
+    teamsFilter(value)
   }
 
   const handleFilterByNationality = (e) => {
-    nationalityFilter(e.target.value)
+    const value = e.target.value
+    setFilterValues((values) => ({...values, nationality: value}))
+    nationalityFilter(value)
   }
 
   const handleFilterDB = (e) => {
-    DBFilter(e.target.value)
+    const value = e.target.value
+    setFilterValues((values) => ({...values, dbFilter: value}))
+    DBFilter(value)
   }
 
   const handleOrderByName = (e) => {
-    orderByName(e.target.value)
+    const value = e.target.value
+    setFilterValues((values) => ({...values, orderByName: value}))
+    orderByName(value)
   }
 
   const handleOrderByDOB = (e) => {
-    orderByDOB(e.target.value)
+    const value = e.target.value
+    setFilterValues((values) => ({...values, orderByDOB: values}))
+    orderByDOB(value)
+  }
+
+  const cleanFilters = () => {
+
+    setForceRender(!forceRender)
+
+    dispatch(cleanFilteredDrivers())
+    setFilterValues({
+      team: "",
+      nationality: "",
+      dbFilter: "",
+      orderByName: "",
+      orderByDOB: "",
+    });
+    teamsFilter("");
+    nationalityFilter("");
+    DBFilter("");
+    orderByName("");
+    orderByDOB("");
   }
 
   return (
-    <div className={s.navContainer}>
+    <div className={s.navContainer} key={forceRender}>
       <img src="/racingFlag.webp" alt="racingFlag" />
       <div className={s.searchContainer}>
         <div className={s.searchBar}>
@@ -80,7 +131,7 @@ function NavBar({ onSearch, teams, teamsFilter, nationalityFilter, DBFilter, ord
           </button>
         </div>
         <div className={s.filters}>
-          <select onChange={handleFilterByNationality} defaultValue="">
+          <select onChange={handleFilterByNationality} defaultValue={filterValues.nationality}>
             <option disabled value="">
               Filtra por nacionalidad
             </option>
@@ -90,7 +141,7 @@ function NavBar({ onSearch, teams, teamsFilter, nationalityFilter, DBFilter, ord
               </option>
             ))}
           </select>
-          <select onChange={handleFilterByTeams} defaultValue="">
+          <select onChange={handleFilterByTeams} defaultValue={filterValues.team}>
             <option disabled value="">
               Filtra por escudería
             </option>
@@ -100,21 +151,21 @@ function NavBar({ onSearch, teams, teamsFilter, nationalityFilter, DBFilter, ord
               </option>
             ))}
           </select>
-          <select onChange={handleFilterDB} defaultValue="">
+          <select onChange={handleFilterDB} defaultValue={filterValues.dbFilter}>
             <option disabled value="">
               En Base de Datos
             </option>
             <option value="Y">Sí</option>
             <option value="N">No</option>
           </select>
-          <select onChange={handleOrderByName} defaultValue="">
+          <select onChange={handleOrderByName} defaultValue={filterValues.orderByName}>
             <option disabled value="">
               Ordenar alfabéticamente
             </option>
             <option value="A">↧</option>
             <option value="D">↥</option>
           </select>
-          <select onChange={handleOrderByDOB} defaultValue="">
+          <select onChange={handleOrderByDOB} defaultValue={filterValues.orderByDOB}>
             <option disabled value="">
               Ordenar por nacimiento
             </option>
@@ -123,7 +174,7 @@ function NavBar({ onSearch, teams, teamsFilter, nationalityFilter, DBFilter, ord
           </select>
         </div>
         <div className={s.cleanFilters}>
-          <button className={s.navBarButton} type="submit" >
+          <button className={s.navBarButton} type="submit" onClick={cleanFilters} >
             Limpiar filtros
           </button>
         </div>
