@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import s from "./navBar.module.css";
 import { useDispatch } from "react-redux";
-import { cleanFilteredDrivers } from "../../redux/actions";
+import { cleanFilteredDrivers, setSearched } from "../../redux/actions";
 import axios from "axios";
 function NavBar({ onSearch, teams, teamsFilter, nationalityFilter, DBFilter, orderByName, orderByDOB, getAllDrivers, handleCreateButton }) {
 
@@ -92,6 +92,7 @@ function NavBar({ onSearch, teams, teamsFilter, nationalityFilter, DBFilter, ord
     setForceRender(!forceRender)
 
     dispatch(cleanFilteredDrivers())
+    dispatch(setSearched(false))
     setFilterValues({
       team: "",
       nationality: "",
@@ -99,11 +100,6 @@ function NavBar({ onSearch, teams, teamsFilter, nationalityFilter, DBFilter, ord
       orderByName: "",
       orderByDOB: "",
     });
-    teamsFilter("");
-    nationalityFilter("");
-    DBFilter("");
-    orderByName("");
-    orderByDOB("");
   }
 
   return (
@@ -174,7 +170,7 @@ function NavBar({ onSearch, teams, teamsFilter, nationalityFilter, DBFilter, ord
         </div>
         <div className={s.cleanFilters}>
           <button className={s.navBarButton} type="submit" onClick={cleanFilters} >
-            Limpiar filtros
+            Borrar filtros
           </button>
         </div>
       </div>

@@ -24,7 +24,7 @@ const controllerGetAllTeams = async (req, res) => {
     //   ));
       
     const allTeamsFromBD = await Team.findAll();
-  
+    
     return allTeamsFromBD;
 
   } catch (error) {

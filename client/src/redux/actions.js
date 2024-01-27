@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { FILTER_BY_TEAMS, FILTER_BY_NATIONALITY, GET_DRIVERS, CLEAN_FILTERED_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, NEXT_PAGE, PREV_PAGE, SPECIFIC_PAGE, SET_NOT_FOUND, SET_CURRENT_PAGE, SET_SEARCHED} from './actions-types'
+import { FILTER_BY_TEAMS, FILTER_BY_NATIONALITY, GET_DRIVERS, CLEAN_FILTERED_DRIVERS, GET_DRIVER_BY_NAME, GET_TEAMS, FILTER_BY_DB, ORDER_BY_NAME, ORDER_BY_DOB, NEXT_PAGE, PREV_PAGE, SPECIFIC_PAGE, SET_NOT_FOUND, SET_CURRENT_PAGE, SET_SEARCHED, SET_FILTERED} from './actions-types'
 
 
 export function getDrivers() {
@@ -38,6 +38,7 @@ export function getTeams() {
   return async function (dispatch) {
     try {
       const {data} = await axios.get("http://localhost:3001/teams");
+      console.log(data);
       return dispatch({
         type: GET_TEAMS,
         payload: data,
@@ -100,6 +101,13 @@ export const setOrderByDOB = (order) => {
     type: ORDER_BY_DOB,
     payload: order
   }
+}
+
+export function setFiltered(boolean) {
+  return {
+    type: SET_FILTERED,
+    payload: boolean,
+  };
 }
 
 export const nextPage = () => {
