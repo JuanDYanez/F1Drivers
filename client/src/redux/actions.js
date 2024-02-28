@@ -6,7 +6,7 @@ export function getDrivers() {
 
   return async function (dispatch) {
     try {
-      const {data} = await axios.get("http://localhost:3001/drivers");
+      const {data} = await axios.get(`${import.meta.env.VITE_URL_BACKEND}/drivers`);
       return dispatch({
         type: GET_DRIVERS,
         payload: data,
@@ -37,7 +37,7 @@ export function cleanShowNotFound() {
 export function getTeams() {
   return async function (dispatch) {
     try {
-      const {data} = await axios.get("http://localhost:3001/teams");
+      const {data} = await axios.get(`${import.meta.env.VITE_URL_BACKEND}/teams`);
       console.log(data);
       return dispatch({
         type: GET_TEAMS,
@@ -53,7 +53,7 @@ export const getDriverByName = (name) => {
   
   return async (dispatch) => {
     try {
-      const endpoint = `http://localhost:3001/drivers/name?name=${name}`;
+      const endpoint = `${import.meta.env.VITE_URL_BACKEND}/drivers/name?name=${name}`;
       const response = await axios.get(endpoint)   
         dispatch(
           {

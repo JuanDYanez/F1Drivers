@@ -18,7 +18,7 @@ function Detail() {
   async function getNationalityFlag(id) {
       try {
         const { data } = await axios.get(
-          `http://localhost:3001/drivers/flag/${id}`
+          `${import.meta.env.VITE_URL_BACKEND}/drivers/flag/${id}`
         );
 
         return setNationalityFlag(data)
@@ -34,7 +34,7 @@ function Detail() {
       
       getNationalityFlag(id)
         .then(() => {
-          return axios.get(`http://localhost:3001/drivers/${id}`);
+          return axios.get(`${import.meta.env.VITE_URL_BACKEND}/drivers/${id}`);
         })
         .then((response) => {
           setDriver(response.data);

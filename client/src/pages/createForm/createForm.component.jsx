@@ -16,7 +16,7 @@ function CreateForm({handleCloseForm}) {
   async function getNationalities() {
       try {
         const { data } = await axios.get(
-          "http://localhost:3001/drivers/nationalities"
+          `${import.meta.env.VITE_URL_BACKEND}/drivers/nationalities`
         );
         return setNationalities(data)
       } catch (error) {
@@ -93,7 +93,7 @@ function CreateForm({handleCloseForm}) {
 
     e.preventDefault()
 
-    const URL = "http://localhost:3001/drivers/";
+    const URL = `${import.meta.env.VITE_URL_BACKEND}/drivers/`;
 
     try {
 

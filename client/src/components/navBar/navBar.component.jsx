@@ -24,7 +24,7 @@ function NavBar({ onSearch, teams, teamsFilter, nationalityFilter, DBFilter, ord
   async function getLocalNationalities () {
       try {
         const { data } = await axios.get(
-          "http://localhost:3001/drivers/localnationalities"
+          `${import.meta.env.VITE_URL_BACKEND}/drivers/localnationalities`
         );
         return setLocalNationalities(data)
       } catch (error) {
